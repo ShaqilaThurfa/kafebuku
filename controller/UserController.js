@@ -1,70 +1,62 @@
-// https://api.nytimes.com/svc/books/v3/lists/current/young-adult.json?api-key=NTa5GkQ1SMWf9FRbGbvbZLyUBgfiaM2h
-// https://api.nytimes.com/svc/books/v3/lists/current/childrens-middle-grade-e-book.json?api-key=NTa5GkQ1SMWf9FRbGbvbZLyUBgfiaM2h
-// https://api.nytimes.com/svc/books/v3/lists/current/hardcover-fiction.json?api-key=NTa5GkQ1SMWf9FRbGbvbZLyUBgfiaM2h
-// https://api.nytimes.com/svc/books/v3/lists/current/combined-print-and-e-book-nonfiction.json?api-key=NTa5GkQ1SMWf9FRbGbvbZLyUBgfiaM2h
-
-const { signToken } = require("../helpers/jwt")
-const { User } = require("../models")
-const bcrypt = require("bcrypt")
-
-
+const { signToken } = require("../helpers/jwt");
+const { User } = require("../models");
+const bcrypt = require("bcrypt");
 
 module.exports = class UserController {
-
-  static async register(req, res, next){
-
-    const {fullName, email, password, role} = req.body
+  static async register(req, res, next) {
+    const { fullName, email, role, Password, status } = req.body;
 
     try {
-      await User.create(
-        { fullName,
-          email,
-          password,
-          role
-        }
-      )
-      res.status(201).json({message: "Register Success"})
-      
+      await User.create({
+        fullName,
+        email,
+        role,
+        Password,
+        status
+      });
+
+      res.status(201).json({ message: "Register Success" });
     } catch (error) {
       console.log(error);
-      next()
+
+
+      res.status(500).json({ message: "Internal Server Error" });
     }
   }
 
-  static async login(req, res, next){
-    const {email, password} = req.body
+  static async login(req, res, next) {
+    const { email, Password } = req.body;
 
-    if(!email){
-      res.status(400)
-      return
+
+    if (!email) {
+      return res.status(400).json({ message: "Email is required" });
     }
-    if(!password){
-      res.status(400)
-      return
+    if (!Password) {
+      return res.status(400).json({ message: "Password is required" });
     }
 
     try {
+      const user = await User.findOne({ where: { email } });
 
-      const user = await User.findOne({where: {email}})
 
-      if(!user){
-        res.status(401)
-        return
+      if (!user) {
+        return res.status(401).json({ message: "Invalid email or password" });
       }
 
-      const isValidPassword = await bcrypt.compare(password, user.password)
 
-      if(!isValidPassword){
-        res.status(401)
-        return
+      const isValidPassword = await bcrypt.compare(Password, user.Password);
+
+      if (!isValidPassword) {
+        return res.status(401).json({ message: "Invalid email or password" });
       }
 
-      const access_token = signToken({id: user.id})
 
-      res.status(200).json({access_token})
-    } catch(error){
+      const access_token = signToken({ id: user.id });
+
+      res.status(200).json({ access_token });
+    } catch (error) {
       console.log(error);
-      next()
+      res.status(500).json({ message: "Internal Server Error" });
     }
   }
-}
+};
