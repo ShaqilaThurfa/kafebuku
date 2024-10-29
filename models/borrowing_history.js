@@ -14,10 +14,7 @@ module.exports = (sequelize, DataTypes) => {
         as: 'user'
       });
       
-      BorrowingHistory.belongsTo(models.Book, {
-        foreignKey: 'bookId',
-        as: 'book'
-      });
+
     }
   }
 
@@ -73,7 +70,7 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
     borrowed_at: {
-      type: DataTypes.DATE, // Gunakan DATE untuk menyimpan tanggal dan waktu
+      type: DataTypes.DATE, 
       allowNull: false,
       validate: {
         notEmpty: {
@@ -87,8 +84,8 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
     returned_at: {
-      type: DataTypes.DATE, // Gunakan DATE untuk menyimpan tanggal dan waktu
-      allowNull: true, // Seharusnya ini tidak perlu menjadi `false` jika belum dikembalikan
+      type: DataTypes.DATE, 
+      allowNull: true, 
     }
   }, {
     sequelize,
