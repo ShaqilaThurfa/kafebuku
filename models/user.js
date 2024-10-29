@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
         as: 'bookLists' 
       });
 
-      User.hasMany(models.borrowing_history, {
+      User.hasMany(models.BorrowingHistory, {
         foreignKey: 'userId',
         as: 'borrowingHistory' 
       });
@@ -63,7 +63,7 @@ module.exports = (sequelize, DataTypes) => {
         }
       }
     },
-    password: { // Ubah ke lowercase
+    Password: { 
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
@@ -88,6 +88,10 @@ module.exports = (sequelize, DataTypes) => {
     role: {
       type: DataTypes.STRING,
       defaultValue: "User"
+    },
+    status: {
+      type: DataTypes.STRING,
+      defaultValue: "active"
     }
   }, {
     sequelize,
@@ -95,7 +99,7 @@ module.exports = (sequelize, DataTypes) => {
     hooks: {
       beforeCreate: async (user) => {
         const salt = await bcrypt.genSalt(10);
-        user.password = await bcrypt.hash(user.password, salt); // Pastikan menggunakan password yang benar
+        user.Password = await bcrypt.hash(user.Password, salt); 
       }
     }
   });
