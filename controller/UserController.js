@@ -17,10 +17,10 @@ module.exports = class UserController {
 
       res.status(201).json({ message: "Register Success" });
     } catch (error) {
-      console.log(error);
-
-
-      res.status(500).json({ message: "Internal Server Error" });
+      console.log('sampe sini',error);
+      next();
+      // res.status(400).json({ message: error.errors[0].message });
+      
     }
   }
 
@@ -56,7 +56,7 @@ module.exports = class UserController {
       res.status(200).json({ access_token });
     } catch (error) {
       console.log(error);
-      res.status(500).json({ message: "Internal Server Error" });
+      next();
     }
   }
 };

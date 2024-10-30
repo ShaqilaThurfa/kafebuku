@@ -1,5 +1,6 @@
 const { User } = require("../models");
 
+
 module.exports = class AdminController {
   static async addAdmin(req, res, next) {
     const { fullName, email, Password, status } = req.body;
@@ -21,6 +22,19 @@ module.exports = class AdminController {
     }
   }
 
+  static async getUsers(req, res, next) {
+    
+    try {
+      const users = await User.findAll();
+
+      res.status(201).json(users);
+    } catch (error) {
+      console.log(error);
+
+      res.status(500).json({ message: "Internal Server Error" });
+    }
+  }
+
   static async banned(req, res, next) {
     const { userId } = req.params.userId;
     try {
@@ -30,8 +44,8 @@ module.exports = class AdminController {
         throw { name: "NotFound", message: "User not found" };
       }
 
-      user.status = "banned";
-      await user.save();
+      user.update({status: "banned"});
+      
 
       res.status(200).json({ message: `User with ID ${userId} has been banned successfully.` });
 
