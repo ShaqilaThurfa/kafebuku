@@ -13,35 +13,33 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: 'Users', // Nama tabel yang dirujuk
-          key: 'id' // Kolom yang dirujuk
+          model: 'Users', 
+          key: 'id' 
         },
-        onUpdate: 'CASCADE', // Mengupdate data saat user di-update
-        onDelete: 'CASCADE' // Menghapus data saat user dihapus
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE' 
       },
       bookId: {
         type: Sequelize.INTEGER,
         allowNull: false,
-        onUpdate: 'CASCADE', // Mengupdate data saat book di-update
-        onDelete: 'CASCADE' // Menghapus data saat book dihapus
       },
       title: {
         type: Sequelize.STRING,
         allowNull: false,
         validate: {
-          notEmpty: true, // Memastikan title tidak kosong
+          notEmpty: true, 
         }
       },
       borrowed_at: {
-        type: Sequelize.DATE, // Gunakan DATE untuk menyimpan tanggal dan waktu
+        type: Sequelize.DATE, 
         allowNull: false,
         validate: {
-          notEmpty: true, // Memastikan borrowed_at tidak kosong
+          notEmpty: true, 
         }
       },
       returned_at: {
-        type: Sequelize.DATE, // Gunakan DATE untuk menyimpan tanggal dan waktu
-        allowNull: true // Bisa null jika belum dikembalikan
+        type: Sequelize.DATE, 
+        allowNull: true 
       },
       createdAt: {
         allowNull: false,
