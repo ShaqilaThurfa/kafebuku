@@ -1,13 +1,14 @@
+import axios from "axios";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios"
+
 
 
 export default function RegisterPage() {
 
   const [fullName, setfullName] = useState("")
   const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
+  const [Password, setPassword] = useState("")
   const navigate = useNavigate()
 
   const handleOnSubmit = async (event) => {
@@ -15,14 +16,15 @@ export default function RegisterPage() {
 
     try {
       
-      console.log(fullName, password, 'ini data');
+      console.log(fullName, Password, 'ini data');
 
-      await axios.post("http://localhost:3000/register", {
+      await axios.post("http://localhost:3001/user/register", {
         fullName,
         email,
-        password
+        Password
       })
-  
+      console.log("register success");
+      
       navigate("/login")
 
     } catch (error) {
@@ -31,7 +33,7 @@ export default function RegisterPage() {
   }
   
   return (
-    <>
+    <div>
       <form onSubmit={handleOnSubmit} className="mx-auto w-50 gap-5 my-5">
         <h1 className="py-5">Register Page</h1>
         <div className="mb-3">
@@ -39,6 +41,7 @@ export default function RegisterPage() {
             Full Name
           </label>
           <input
+            name="fullName"
             type="text"
             className="form-control"
             id="fullName"
@@ -52,6 +55,7 @@ export default function RegisterPage() {
             Email address
           </label>
           <input
+            name="email"
             type="email"
             className="form-control"
             id="exampleInputEmail1"
@@ -65,10 +69,11 @@ export default function RegisterPage() {
             Password
           </label>
           <input
+            name="Password"
             type="password"
             className="form-control"
             id="exampleInputPassword1"
-            value={password}
+            value={Password}
             onChange={e => setPassword(e.target.value)}
           />
         </div>
@@ -82,6 +87,6 @@ export default function RegisterPage() {
 
       
       
-    </>
+    </div>
   );
 }
