@@ -13,7 +13,11 @@ module.exports = {
         type: Sequelize.STRING
       },
       email: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        unique: {
+          args: true,
+          msg: "Email must be unique"
+        }
       },
       role: {
         type: Sequelize.STRING
