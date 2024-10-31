@@ -5,7 +5,7 @@ import axios from "axios"
 export default function LoginPage() {
 
   const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
+  const [Password, setPassword] = useState("")
   const navigate = useNavigate()
 
   const handleOnSubmit = async (event) => {
@@ -13,16 +13,19 @@ export default function LoginPage() {
 
     try {
       
-      const {data} = await axios.post("http://localhost:3000/", {
+      const {data} = await axios.post("http://localhost:3001/user/login", {
         email,
-        password,
+        Password,
       })
 
       console.log(data)
 
       localStorage.setItem("access_token", data.access_token)
+
+      console.log("access_token");
+      
   
-      navigate("/")
+      // navigate("/")
 
     } catch (error) {
       console.log(error)
@@ -38,6 +41,7 @@ export default function LoginPage() {
             Email address
           </label>
           <input
+            name="email"
             type="email"
             className="form-control"
             id="exampleInputEmail1"
@@ -51,10 +55,11 @@ export default function LoginPage() {
             Password
           </label>
           <input
+            name="Password"
             type="password"
             className="form-control"
             id="exampleInputPassword1"
-            value={password}
+            value={Password}
             onChange={e => setPassword(e.target.value)}
           />
         </div>
