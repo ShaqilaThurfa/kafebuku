@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios"
 
@@ -31,6 +31,36 @@ export default function LoginPage() {
       console.log(error)
     }
   }
+
+
+  async function handleCredentialResponse(response) {
+    console.log("Encoded JWT ID token: " + response.credential);
+    const { data } = await axios.post(`http://localhost:3001/user/googlelogin`, null, {
+      headers: {
+        token: response.credential
+      }
+    })
+
+    localStorage.setItem("access_token", data.access_token)
+    navigate("/")
+  }
+
+  useEffect(() => {
+
+    google.accounts.id.initialize({
+      client_id: "1050505246453-n8i7i8caqa6eq79np0lsddm12tmvcfjk.apps.googleusercontent.com",
+      callback: handleCredentialResponse
+    });
+    google.accounts.id.renderButton(
+      document.getElementById("buttonDiv"),
+      { theme: "outline", size: "large" }  
+    );
+    google.accounts.id.prompt(); 
+  
+
+  }, [])
+  
+    
   
   return (
     <>
@@ -68,6 +98,9 @@ export default function LoginPage() {
         </button>
 
         <p>You do not have an account yet? <Link to= "/register" className="text-decoration-none">Register</Link></p>
+
+        <div id="buttonDiv" className="justify-center"></div>
+
       </form>
     
     

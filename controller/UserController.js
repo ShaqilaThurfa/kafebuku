@@ -64,4 +64,32 @@ module.exports = class UserController {
       next();
     }
   }
-};
+
+  static async googleLogin(req, res, next) {
+    const { token } = req.headers;
+    const client = new OAuth2Client();
+    try {
+      const ticket = await client.verifyIdToken({
+        idToken: token,
+        audience: process.env.GOOGLE_CLIENT_ID,
+      });
+      const payload = ticket.getPayload();
+      const [user, created] = await User.findOrCreate({
+        where: { email: payload.email },
+        defaults: {
+          username: payload.fullName,
+          email: payload.email,
+          Password: 'password-google',
+        },
+        hooks: false,
+      });
+      const access_token = signToken({ id: user.id, email: user.email });
+      return res.status(200).json({ access_token });
+    } catch (err) {
+      console.log(err)
+      next(err);
+    }
+  
+}
+
+}

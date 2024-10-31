@@ -15,7 +15,7 @@ export default function MyListPage() {
     dispatch(fetchNovelByUserId());
   }, [dispatch]);
 
-  // Buka modal setelah generatedStory di-update
+  
   useEffect(() => {
     if (generatedStory) {
       setModalOpen(true);
