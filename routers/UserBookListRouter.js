@@ -4,9 +4,9 @@ const NotBanned = require("../middlewares/NotBanned");
 
 const router = require("express").Router();
 
-
-router.post("/rentbook", Authentication, NotBanned,  UserBookListController.rentBook);
-router.delete("/returnbook", Authentication, NotBanned, UserBookListController.returnBook);
+router.get("/mybooklist", Authentication, UserBookListController.UserBookList)
+router.post("/borrowbook", Authentication, NotBanned,  UserBookListController.rentBook);
+router.delete("/returnbook/:bookId", Authentication, NotBanned, UserBookListController.returnBook);
 
 
 module.exports = router
