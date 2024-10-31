@@ -3,19 +3,24 @@ const { User } = require("../models");
 const bcrypt = require("bcrypt");
 
 module.exports = class UserController {
-  static async register(req, res, next, error) {
-    const { fullName, email, role, Password, status } = req.body;
-
+  static async register(req, res, next) {
+    const { fullName, email, Password, role, status } = req.body;
+    console.log(req.body);
+    
     try {
       await User.create({
         fullName,
         email,
-        role,
         Password,
+        role,
         status
       });
-
+      
+      // res.send('Hello World!')
       res.status(201).json({ message: "Register Success" });
+
+      
+      
     } catch (error) {
       // console.log('sampe sini',error.errors[0].message);
       next(error);

@@ -24,7 +24,7 @@ module.exports = class UserBookListController{
   }
 
   static async returnBook(req, res, next) {
-    const { bookId } = req.body;
+    const bookId  = req.params.bookId;
     const userId = req.user.id
 
     try {
@@ -34,6 +34,23 @@ module.exports = class UserBookListController{
       }
       await book.destroy();
       res.status(200).json({ message: "Book successfully returned." });
+
+    } catch (error) {
+      console.log(error);
+      next(error);
+    }
+  }
+
+  static async UserBookList(req, res, next) {
+    const userId = req.user.id
+
+    try {
+      const book = await UserBookList.findAll({ where: { userId, status: "borrowed" } });
+      if (!book) {
+        throw { name: "NotFound", message: "Book not found" };
+      }
+      
+      res.status(200).json(book);
 
     } catch (error) {
       console.log(error);
