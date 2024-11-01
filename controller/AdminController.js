@@ -37,8 +37,15 @@ module.exports = class AdminController {
   }
 
   static async banned(req, res, next) {
-    const { userId } = req.params.userId;
+    const  userId  = req.params.id;
     try {
+      if(req.user.role !== "Admin") {
+
+        next({ name: "Forbidden", message: "You are not authorized"})
+        return
+      }
+      console.log(req.user.role);
+      
       const user = await User.findByPk(userId);
 
       if (!user) {
@@ -55,7 +62,7 @@ module.exports = class AdminController {
     }
   }
   static async removeUser(req, res, next) {
-    const { userId } = req.params.userId;
+    const  userId  = req.params.id;
     try {
       const user = await User.findByPk(userId);
       if (!user) {

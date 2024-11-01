@@ -8,7 +8,7 @@ const router = require("express").Router();
 
 router.post("/add-admin", GuardAdmin, AdminController.addAdmin);
 router.get("/all-users", GuardAdmin, AdminController.getUsers);
-router.put("/ban/userId", GuardAdmin, AdminController.banned);
-router.post("/delete/userId", GuardAdmin, AdminController.removeUser);
+router.put("/ban/:id", AdminController.banned);
+router.post("/delete/:id", AdminController.removeUser);
 
 module.exports = router

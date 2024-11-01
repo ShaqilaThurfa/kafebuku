@@ -24,11 +24,11 @@ module.exports = class UserBookListController{
   }
 
   static async returnBook(req, res, next) {
-    const bookId  = req.params.bookId;
+    const bookId  = req.params.bookId
     const userId = req.user.id
 
     try {
-      const book = await UserBookList.findOne({ where: { bookId, userId, status: "borrowed" } });
+      const book = await UserBookList.findOne({ where: { bookId, userId} });
       if (!book) {
         throw { name: "NotFound", message: "Book not found" };
       }

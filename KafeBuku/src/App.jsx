@@ -2,17 +2,29 @@ import {
   createBrowserRouter,
   RouterProvider,
   Route,
-  Link,
   redirect,
   Outlet,
 } from "react-router-dom";
 
 import RegisterPage from "./page/registrasipage";
 import LoginPage from "./page/loginpage";
-import HomePage from "./page/Homepage"
-import MyList from "./page/MyList"
+import HomePage from "./page/Homepage";
+import MyList from "./page/MyList";
+import NavBar from "./component/navbar";
+import AdminPage from "./page/AdminPage";
+import Histories from "./page/PageHistories";
 
 
+
+
+const checkAuthLoader = async () => {
+  const isLoggedIn = localStorage.getItem("access_token");
+  if (!isLoggedIn) {
+    throw redirect("/login"); 
+  } else{
+    return null
+  }
+};
 
 const router = createBrowserRouter([
   {
@@ -22,40 +34,38 @@ const router = createBrowserRouter([
   {
     path: "/login",
     element: <LoginPage />,
-    // loader: async () => {
-    //   const isloggedin = localStorage.getItem("access_token");
-    //   if (isloggedin) {
-    //     throw redirect("/");
-    //   } else {
-    //     return null;
-    //   }
-    // },
   },
   {
-    path: "/",
-    element: <HomePage />,
-    // loader: async () => {
-    //   const isloggedin = localStorage.getItem("access_token");
-    //   if (isloggedin) {
-    //     throw redirect("/");
-    //   } else {
-    //     return null;
-    //   }
-    // },
+   
+    element: (
+      <>
+        <NavBar />
+        <Outlet />
+      </>
+    ),
+    children: [
+      {
+        path: "/",
+        element: <HomePage />,
+        loader: checkAuthLoader, 
+      },
+      {
+        path: "/mylist",
+        element: <MyList />,
+        loader: checkAuthLoader,
+      },
+      {
+        path: "/all-users",
+        element: <AdminPage />,
+        loader: checkAuthLoader,
+      },
+      {
+        path: "/myhistories",
+        element: <Histories />,
+        loader: checkAuthLoader,
+      },
+    ],
   },
-  {
-    path: "/Mylist",
-    element: <MyList />,
-    // loader: async () => {
-    //   const isloggedin = localStorage.getItem("access_token");
-    //   if (isloggedin) {
-    //     throw redirect("/");
-    //   } else {
-    //     return null;
-    //   }
-    // },
-  },
-  
 ]);
 
 function App() {
@@ -63,4 +73,3 @@ function App() {
 }
 
 export default App;
-

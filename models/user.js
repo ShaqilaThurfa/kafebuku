@@ -79,10 +79,10 @@ module.exports = (sequelize, DataTypes) => {
           args: [8],
           msg: "Password must be at least 8 characters long"
         },
-        is: {
-          args: /^(?=.*[!@#$%^&*(),.?":{}|<>])/,
-          msg: "Password must contain at least one special character"
-        }
+        // is: {
+        //   args: /^(?=.*[!@#$%^&*(),.?":{}|<>])/,
+        //   msg: "Password must contain at least one special character"
+        // }
       }
     },
     role: {

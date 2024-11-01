@@ -1,6 +1,7 @@
 const { signToken } = require("../helpers/jwt");
 const { User } = require("../models");
 const bcrypt = require("bcrypt");
+const {OAuth2Client} = require('google-auth-library');
 
 module.exports = class UserController {
   static async register(req, res, next) {
@@ -71,13 +72,15 @@ module.exports = class UserController {
     try {
       const ticket = await client.verifyIdToken({
         idToken: token,
-        audience: process.env.GOOGLE_CLIENT_ID,
+        audience: "1050505246453-n8i7i8caqa6eq79np0lsddm12tmvcfjk.apps.googleusercontent.com",
       });
       const payload = ticket.getPayload();
+      console.log(payload);
+      
       const [user, created] = await User.findOrCreate({
         where: { email: payload.email },
         defaults: {
-          username: payload.fullName,
+          fullName: payload.name,
           email: payload.email,
           Password: 'password-google',
         },

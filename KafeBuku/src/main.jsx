@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client'
 
 import App from './App.jsx'
 import { Provider } from 'react-redux'
-import {store} from "./index.js"
+import store from "./story.js"
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -12,3 +12,4 @@ createRoot(document.getElementById('root')).render(
     </Provider>
   </StrictMode>,
 )
+

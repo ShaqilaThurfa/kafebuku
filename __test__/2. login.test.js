@@ -7,8 +7,10 @@ describe('Berhasil login dan mengirimkan access_token', () => {
     const response = await request(app)
       .post('/user/login')
       .send({
-        email: 'skibidi@gmail.com',
-        Password: 'scabbers123!',
+       
+    "email": "shaqilathurfa@mail.com",
+    "Password": "12345678*",
+  
       })
       .expect(200);
     expect(response.body).toHaveProperty('access_token');

@@ -1,43 +1,39 @@
 import axios from "axios";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-
+import Swal from "sweetalert2";
 
 
 export default function RegisterPage() {
-
-  const [fullName, setfullName] = useState("")
-  const [email, setEmail] = useState("")
-  const [Password, setPassword] = useState("")
-  const navigate = useNavigate()
+  const [fullName, setFullName] = useState("");
+  const [email, setEmail] = useState("");
+  const [Password, setPassword] = useState("");
+  const navigate = useNavigate();
 
   const handleOnSubmit = async (event) => {
-    event.preventDefault()
+    event.preventDefault();
 
     try {
-      
-      console.log(fullName, Password, 'ini data');
-
       await axios.post("http://localhost:3001/user/register", {
         fullName,
         email,
-        Password
-      })
-      console.log("register success");
-      
-      navigate("/login")
-
+        Password,
+      });
+      console.log("Register success");
+      navigate("/login");
     } catch (error) {
-      console.log(error)
+      Swal.fire({
+        text: error.response ? error.response.data.message : 'Something went wrong!',
+      });
     }
-  }
-  
+  };
+
   return (
-    <div>
-      <form onSubmit={handleOnSubmit} className="mx-auto w-50 gap-5 my-5">
-        <h1 className="py-5">Register Page</h1>
+    <div className="d-flex justify-content-center align-items-center" style={{ minHeight: "100vh", backgroundColor: "#F5F5DC" }}>
+      <form onSubmit={handleOnSubmit} className="w-50 bg-light p-4 rounded shadow">
+        <h1 className="text-center mb-4" style={{ color: "#8B4513" }}>Register Page</h1>
         <div className="mb-3">
-          <label htmlFor="fullName" className="form-label">
+          <label htmlFor="fullName" className="form-label" style={{ color: "#8B4513" }}>
             Full Name
           </label>
           <input
@@ -47,11 +43,11 @@ export default function RegisterPage() {
             id="fullName"
             aria-describedby="FullName"
             value={fullName}
-            onChange={e => setfullName(e.target.value)}
+            onChange={e => setFullName(e.target.value)}
           />
         </div>
         <div className="mb-3">
-          <label htmlFor="exampleInputEmail1" className="form-label">
+          <label htmlFor="exampleInputEmail1" className="form-label" style={{ color: "#8B4513" }}>
             Email address
           </label>
           <input
@@ -64,8 +60,8 @@ export default function RegisterPage() {
             onChange={e => setEmail(e.target.value)}
           />
         </div>
-        <div className="mb-3">
-          <label htmlFor="exampleInputPassword1" className="form-label">
+        <div className="mb-3" >
+          <label htmlFor="exampleInputPassword1" className="form-label" style={{ color: "#8B4513" }}>
             Password
           </label>
           <input
@@ -77,16 +73,14 @@ export default function RegisterPage() {
             onChange={e => setPassword(e.target.value)}
           />
         </div>
-        <button type="submit" className="btn btn-primary my-5">
-          Submit
+        <button type="submit" className="btn btn-primary my-3" style={{ backgroundColor: "#8B4513", borderColor: "#8B4513", justifySelf:"center"}}>
+          Register
         </button>
         
-        <p className="mx-auto">Do you have an account? <Link to= "/login" className="text-decoration-none">Login</Link></p>
-
+        <p className="text-center">
+          Do you have an account? <Link to="/login" className="text-decoration-none" style={{ color: "#8B4513" }}>Login</Link>
+        </p>
       </form>
-
-      
-      
     </div>
   );
 }

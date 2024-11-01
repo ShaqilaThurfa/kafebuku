@@ -10,7 +10,7 @@ export const novelSlice = createSlice({
     items: [],
     errors: null,
     loading: false,
-    generatedStory: null,
+    // generatedStory: "",
   },
   reducers: {
     fetchStart: (state) => {
@@ -25,9 +25,9 @@ export const novelSlice = createSlice({
       state.loading = false;
       state.errors = action.payload;
     },
-    // setGeneratedStory: (state, action) => {
-    //   state.generatedStory = action.payload;
-    // },
+    setGeneratedStory: (state, action) => {
+      state.generatedStory = action.payload;
+    },
   },
 });
 

@@ -1,5 +1,5 @@
-
 const cors = require('cors')
+
 
 
 const express = require("express")
@@ -10,7 +10,7 @@ const port = 3001
 //   res.send('Hello World!')
 // })
 
-
+app.use(cors())
 
 
 const Adminrouter = require('./routers/adminRouter')
@@ -32,17 +32,17 @@ app.use(express.json())
 
 
 
-app.use(cors())
+
 
 app.use('/user', UserRouter)
 
 app.use(Authentication)
 app.use('/user', HistoryRouter)
-app.use('/user',UserBookListRouter)
+app.use('/user', UserBookListRouter)
 
 
 
-app.use('admin',Adminrouter)
+app.use('/admin',Adminrouter)
 
 app.use(ErrorHandler)
 

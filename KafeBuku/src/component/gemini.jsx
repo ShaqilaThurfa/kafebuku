@@ -1,46 +1,39 @@
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchNovels, generateStoryWithAI } from "./novelSlice";
+import { useState } from 'react'
+import { GoogleGenerativeAI } from "@google/generative-ai"
 
-function NovelList() {
-  const dispatch = useDispatch();
-  const novels = useSelector((state) => state.novel.items);
-  const loading = useSelector((state) => state.novel.loading);
-  const generatedStory = useSelector((state) => state.novel.generatedStory);
+const genAI = new GoogleGenerativeAI("AIzaSyA9lnkXWwK_bM2-VFjxhTRO_dHEKrwWrCM")
+const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" })
 
-  useEffect(() => {
-    dispatch(fetchNovels());
-  }, [dispatch]);
+const GeminiChat = () => {
+  const [prompt, setPrompt] = useState('')
+  const [response, setResponse] = useState('')
 
-  const handleGenerateStory = (novelId) => {
-    dispatch(generateStoryWithAI(novelId));
-  };
+  const handleSend = async () => {
+    try {
+      const result = await model.generateContent(prompt + " Berikan jawaban rekomendasi novel dengan tema young adult, judulnya aja jawab sesingkat-singkatnya")
+      setResponse(result.response.text())
+    } catch (error) {
+      console.error('Error:', error)
+    }
+  }
 
   return (
     <div>
-      <h1>Popular Novels</h1>
-      {loading ? (
-        <p>Loading novels...</p>
-      ) : (
-        novels.map((novel) => (
-          <div key={novel.rank}>
-            <h2>{novel.title}</h2>
-            <p>{novel.description}</p>
-            <button onClick={() => handleGenerateStory(novel.rank)}>
-              Generate Story
-            </button>
+    <div className="mb-3">
+            <input
+              type="text"
+              value={prompt}
+              onChange={(e) => setPrompt(e.target.value)}
+              placeholder="Recommend me a book about..."
+              style={{ borderRadius: "20px", border: "1px solid #ccc", width:"250px", height:"120px" }}
+            />
           </div>
-        ))
-      )}
-      {generatedStory && (
-        <div>
-          <h2>Generated Story</h2>
-          <p>{generatedStory}</p>
-        </div>
-      )}
-    </div>
-  );
+          <button onClick={handleSend} className="btn btn-success w-100" style={{ borderRadius: "20px" }}>
+            Send
+          </button>
+          <p>Respon: {response}</p>
+          </div>
+  )
 }
 
-export default NovelList;
-
+export default GeminiChat
