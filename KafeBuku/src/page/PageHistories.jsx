@@ -35,7 +35,8 @@ export default function Histories() {
             <tr>
               <th scope="col">#</th>
               <th scope="col">Title</th>
-              <th scope="col">Date</th>
+              <th scope="col">Borrowed at</th>
+              <th scope="col">Returned at</th>
             </tr>
           </thead>
           <tbody>
@@ -43,7 +44,8 @@ export default function Histories() {
               <tr key={history.id} style={{ backgroundColor: index % 2 === 0 ? '#FAEBD7' : '#F5F5DC' }}>
                 <th scope="row">{index + 1}</th>
                 <td>{history.title}</td>
-                <td>{new Date(history.createdAt).toLocaleDateString()}</td>
+                <td>{new Date(history.borrowed_at).toLocaleDateString()}</td>
+                <td>{new Date(history.returned_at).toLocaleDateString()}</td>
               </tr>
             ))}
           </tbody>

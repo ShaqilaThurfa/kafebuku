@@ -30,6 +30,7 @@ export default function AdminPage() {
 
   const handleOnDeleteUser = async (id) => {
     try {
+      // console.log(id);
       await axios.delete(`http://localhost:3001/admin/delete/${id}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("access_token")}`,
@@ -46,12 +47,45 @@ export default function AdminPage() {
     }
   };
   const handleOnBanUser = async (id) => {
+    console.log(id);
+
     try {
-      await axios.put(`http://localhost:3001/admin/ban/${id}`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-        },
+      await axios.put(
+        `http://localhost:3001/admin/ban/${id}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+          },
+        }
+      );
+      // console.log("sampe sini kah kamu?");
+
+      fetchUsers();
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        text: error.response
+          ? error.response.data.message
+          : "Something went wrong!",
       });
+    }
+  };
+
+  const handleOnUnbannedUser = async (id) => {
+    console.log(id);
+
+    try {
+      await axios.put(
+        `http://localhost:3001/admin/unban/${id}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+          },
+        }
+      );
+      // console.log("sampe sini kah kamu?");
       fetchUsers();
     } catch (error) {
       Swal.fire({
@@ -72,25 +106,48 @@ export default function AdminPage() {
       <h2 className="text-center" style={{ color: "#6F4C3E" }}>
         User List
       </h2>
-      <table className="table table-striped mt-4" style={{ backgroundColor: "#F5F5DC" }}>
+      <table
+        className="table table-striped mt-4"
+        style={{ backgroundColor: "#F5F5DC" }}
+      >
         <thead style={{ backgroundColor: "#D8CFC4" }}>
           <tr>
-            <th scope="col">#</th>
-            <th scope="col">Full Name</th>
-            <th scope="col">Email</th>
-            <th scope="col">Status</th>
-            <th scope="col">Actions</th>
-            <th scope="col">Role</th>
+            <th scope="col" style={{ textAlign: "center" }}>
+              #
+            </th>
+            <th scope="col" style={{ textAlign: "center" }}>
+              Full Name
+            </th>
+            <th scope="col" style={{ textAlign: "center" }}>
+              Email
+            </th>
+            <th scope="col" style={{ textAlign: "center" }}>
+              Status
+            </th>
+            <th scope="col" style={{ textAlign: "center" }}>
+              Actions
+            </th>
+            <th scope="col" style={{ textAlign: "center" }}>
+              Role
+            </th>
           </tr>
         </thead>
+
         <tbody>
           {users.length > 0 ? (
             users.map((user, index) => (
-              <tr key={user.id} style={{ backgroundColor: index % 2 === 0 ? "#FAF3E0" : "#F5F5DC" }}>
-                <th scope="row">{index + 1}</th>
-                <td>{user.fullName}</td>
-                <td>{user.email}</td>
-                <td>
+              <tr
+                key={user.id}
+                style={{
+                  backgroundColor: index % 2 === 0 ? "#FAF3E0" : "#F5F5DC",
+                }}
+              >
+                <th scope="row" style={{ textAlign: "center" }}>
+                  {index + 1}
+                </th>
+                <td style={{ textAlign: "center" }}>{user.fullName}</td>
+                <td style={{ textAlign: "center" }}>{user.email}</td>
+                <td style={{ textAlign: "center" }}>
                   <span
                     className={`badge ${
                       user.status === "active" ? "bg-success" : "bg-secondary"
@@ -99,21 +156,21 @@ export default function AdminPage() {
                     {user.status}
                   </span>
                 </td>
-                <td>
-                  <button
-                    className="btn btn-danger me-2"
-                    onClick={() => handleOnDeleteUser(user.id)}
-                  >
-                    Delete
-                  </button>
+                <td className="d-flex gap-2 justify-content-center">
                   <button
                     className="btn btn-warning"
+                    onClick={() => handleOnUnbannedUser(user.id)}
+                  >
+                    Unban
+                  </button>
+                  <button
+                    className="btn btn-danger me-2"
                     onClick={() => handleOnBanUser(user.id)}
                   >
                     Ban
                   </button>
                 </td>
-                <td>
+                <td style={{ textAlign: "center" }}>
                   <span
                     className={`badge ${
                       user.role === "Admin" ? "bg-success" : "bg-secondary"
@@ -135,5 +192,4 @@ export default function AdminPage() {
       </table>
     </div>
   );
-  
 }

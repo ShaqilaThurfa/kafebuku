@@ -17,7 +17,7 @@ export default function HomePage() {
 
   useEffect(() => {
     dispatch(fetchNovels());
-  }, [dispatch]);
+  }, []);
 
   const handleOnBorrow = async (novel) => {
     const bookData = {
@@ -28,8 +28,19 @@ export default function HomePage() {
       description: novel.description,
     };
 
+    const history = {
+      bookId: novel.rank,
+      title: novel.title,
+    };
+
     try {
       await axios.post("http://localhost:3001/user/borrowbook", bookData, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+        },
+      });
+
+      await axios.post("http://localhost:3001/user/createhistory", history, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("access_token")}`,
         },

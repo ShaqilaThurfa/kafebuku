@@ -87,34 +87,34 @@ export const fetchNovelByUserId = () => async (dispatch) => {
   }
 };
 
-// export const generateStoryWithAI = (title, author, description) => async (dispatch) => {
+export const generateStoryWithAI = (title, author, description) => async (dispatch) => {
 
-//   dispatch(fetchStart());
-//   try {
+  dispatch(fetchStart());
+  try {
 
-//     // if (!title && author && description) {
-//     //   throw new Error("Novel not found");
-//     // }
+    // if (!title && author && description) {
+    //   throw new Error("Novel not found");
+    // }
 
-//     const prompt = `Write a story about the novel titled "${title}" written by ${author}. The story should revolve around the theme: "${description}".`;
-//     console.log(prompt);
+    const prompt = `Write a story about the novel titled "${title}" written by ${author}. The story should revolve around the theme: "${description}".`;
+    console.log(prompt);
     
 
-//     const genAI = new GoogleGenerativeAI("AIzaSyD4yrciJlQ4vU0HKgWo8x4PQBL6mWhrmVk" );
-//     const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
-//     const result = await model.generateContent( prompt );
+    const genAI = new GoogleGenerativeAI("AIzaSyD4yrciJlQ4vU0HKgWo8x4PQBL6mWhrmVk" );
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+    const result = await model.generateContent( prompt );
 
-//     console.log('di novel slice', result);
+    console.log('di novel slice', result);
     
     
-//     const generatedStory = result?.data?.text || "No story generated.";
+    const generatedStory = result?.data?.text || "No story generated.";
     
-//     console.log(generatedStory);
+    console.log(generatedStory);
     
 
-//     dispatch(setGeneratedStory(generatedStory));
-//   } catch (error) {
-//     console.error("Error generating story with AI:", error);
-//     dispatch(fetchFailure(error.message || "Error generating story with AI"));
-//   }
-// };
+    dispatch(setGeneratedStory(generatedStory));
+  } catch (error) {
+    console.error("Error generating story with AI:", error);
+    dispatch(fetchFailure(error.message || "Error generating story with AI"));
+  }
+};

@@ -28,9 +28,9 @@ const NavBar = () => {
 
         <div className="collapse navbar-collapse" id="navbarNav">
           <ul className="navbar-nav me-auto">
-            <li className="nav-item">
+            {/* <li className="nav-item">
               <Link className="nav-link" to="/" style={{ color: '#8B4513' }}>Home</Link>
-            </li>
+            </li> */}
             <li className="nav-item">
               <Link className="nav-link" to="/mylist" style={{ color: '#8B4513' }}>My List</Link>
             </li>
@@ -42,12 +42,9 @@ const NavBar = () => {
             </li>
           </ul>
           <ul className="navbar-nav">
-            <li className="nav-item">
-              <Link className="nav-link" to="/login" style={{ color: '#8B4513' }}>Login</Link>
-            </li>
-            <li className="nav-item">
+            {/* <li className="nav-item">
               <Link className="nav-link" to="/register" style={{ color: '#8B4513' }}>Register</Link>
-            </li>
+            </li> */}
             <li className="nav-item">
               <button 
                 className="btn nav-link" 

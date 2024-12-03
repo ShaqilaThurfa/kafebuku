@@ -18,12 +18,39 @@ export default function MyListPage() {
     dispatch(fetchNovelByUserId());
   }, [dispatch]);
 
+  const handleOnReturn = async (bookId) => {
+    try {
+
+      await axios.delete(`http://localhost:3001/user/returnbook/${bookId}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+        },
+      });
+
+      await axios.put(`http://localhost:3001/user/returningbook/${bookId}`, {}, 
+        {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+        },
+      });
+
+
+      dispatch(fetchNovelByUserId());
+    } catch (error) {
+      console.log(error)
+      Swal.fire({
+        text: error.response ? error.response.data.message : 'Something went wrong!',
+      });
+    }
+  };
+
+
   const handleGenerateStory = async (title, description) => {
     try {
 
       console.log(title, description)
 
-      const prompt = `Buat cerita dengan judul "${title}" dengan deskripsi ${description}`;
+      const prompt = `Buat cerita dengan judul "${title}" dengan deskripsi ${description} dalam bahasa Indonesia dengan panjang kata maksimal 500`;
       const genAI = new GoogleGenerativeAI("AIzaSyD4yrciJlQ4vU0HKgWo8x4PQBL6mWhrmVk");
       const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
       const result = await model.generateContent(prompt);
@@ -31,10 +58,14 @@ export default function MyListPage() {
       console.log(prompt);
       
 
-      console.log('ini result',result);
+      
+      
+      const fulltext = result.response.candidates[0].content.parts[0].text
+      console.log('ini result',fulltext);
+      
       
 
-      setGeneratedStory(result.response.text());
+      setGeneratedStory(fulltext);
       console.log('yang ini',generatedStory);
       
       setModalOpen(true);
@@ -47,20 +78,7 @@ export default function MyListPage() {
     }
   };
 
-  const handleOnReturn = async (bookId) => {
-    try {
-      await axios.delete(`http://localhost:3001/user/returnbook/${bookId}`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-        },
-      });
-      dispatch(fetchNovelByUserId());
-    } catch (error) {
-      Swal.fire({
-        text: error.response ? error.response.data.message : 'Something went wrong!',
-      });
-    }
-  };
+  
 
   return (
     <div className="container my-5" style={{ backgroundColor: '#8B4513', color: 'white', borderRadius: '8px', padding: '20px' }}>
@@ -70,7 +88,7 @@ export default function MyListPage() {
       ) : (
         <div className="row g-4 justify-content-center">
           {myBooks.map((novel) => (
-            <div key={novel.rank} className="col-md-6 col-lg-4 d-flex align-items-stretch">
+            <div key={novel.id} className="col-md-6 col-lg-4 d-flex align-items-stretch">
               <div className="card shadow-sm" style={{ width: "100%", backgroundColor: '#F5F5DC' }}>
                 <div className="card-body d-flex flex-column">
                   <h5 className="card-title text-truncate">{novel.title}</h5>
@@ -79,7 +97,7 @@ export default function MyListPage() {
                     <span className="badge bg-success mb-2">{novel.status}</span>
                     <button
                       className="btn btn-danger w-100 mb-2"
-                      onClick={() => handleOnReturn(novel.rank)}
+                      onClick={() => handleOnReturn(novel.bookId)}
                     >
                       Return
                     </button>
@@ -110,7 +128,7 @@ export default function MyListPage() {
                 ></button>
               </div>
               <div className="modal-body">
-                <p>{generatedStory}</p>
+                <p>{JSON.stringify(generatedStory)}</p>
               </div>
               <div className="modal-footer">
                 <button

@@ -20,18 +20,21 @@ module.exports = class BorrowingHistories {
   }
 
   static async returned(req, res, next) {
-    const { bookId } = req.body;
+    const { bookId } = req.params;
     const userId = req.user.id;
+
+    console.log(userId);
+    
 
     try {
       const history = await BorrowingHistory.findOne({
-        where: { bookId, userId, returned_at: null },
+        where: { userId, bookId, returned_at: null },
       });
       if (!history) {
         throw { name: "NotFound", message: "Borrowing record not found" };
       }
       await history.update({
-        returned_at: new Date(),
+        returned_at: new Date()
       });
       res
         .status(200)

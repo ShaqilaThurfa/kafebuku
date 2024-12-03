@@ -90,6 +90,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'BorrowingHistory',
+    tableName: 'borrowing_histories'
   });
 
   return BorrowingHistory;

@@ -39,9 +39,6 @@ app.use('/user', UserRouter)
 app.use(Authentication)
 app.use('/user', HistoryRouter)
 app.use('/user', UserBookListRouter)
-
-
-
 app.use('/admin',Adminrouter)
 
 app.use(ErrorHandler)
