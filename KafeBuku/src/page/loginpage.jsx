@@ -37,9 +37,12 @@ export default function LoginPage() {
     navigate("/")
   }
 
+  const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
+
+  // console.log(googleClientId, 'ini google client id');
   useEffect(() => {
     window.google.accounts.id.initialize({
-      client_id: "1050505246453-n8i7i8caqa6eq79np0lsddm12tmvcfjk.apps.googleusercontent.com",
+      client_id: googleClientId,
       callback: handleCredentialResponse,
     });
     window.google.accounts.id.renderButton(

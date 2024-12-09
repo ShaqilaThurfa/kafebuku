@@ -69,10 +69,11 @@ module.exports = class UserController {
   static async googleLogin(req, res, next) {
     const { token } = req.headers;
     const client = new OAuth2Client();
+    const googleClientId = process.env.GOOGLE_CLIENT_ID;
     try {
       const ticket = await client.verifyIdToken({
         idToken: token,
-        audience: "1050505246453-n8i7i8caqa6eq79np0lsddm12tmvcfjk.apps.googleusercontent.com",
+        audience: googleClientId
       });
       const payload = ticket.getPayload();
       console.log(payload);
