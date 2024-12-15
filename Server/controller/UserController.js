@@ -33,6 +33,9 @@ module.exports = class UserController {
   static async login(req, res, next) {
     const { email, Password } = req.body;
 
+    const now = new Date()
+    console.log(now)
+
 
     if (!email) {
       return res.status(400).json({ message: "Email is required" });
