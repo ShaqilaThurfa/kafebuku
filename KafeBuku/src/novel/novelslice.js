@@ -1,6 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import { GoogleGenerativeAI } from "@google/generative-ai";
 
 
 
@@ -24,9 +23,6 @@ export const novelSlice = createSlice({
     fetchFailure: (state, action) => {
       state.loading = false;
       state.errors = action.payload;
-    },
-    setGeneratedStory: (state, action) => {
-      state.generatedStory = action.payload;
     },
   },
 });
@@ -76,6 +72,8 @@ export const fetchNovelByUserId = () => async (dispatch) => {
       headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` },
     });
 
+    console.log("Updated book list: ", data);
+
     if (data && data.length > 0) {
       dispatch(fetchSuccess(data)); 
     } else {
@@ -87,34 +85,3 @@ export const fetchNovelByUserId = () => async (dispatch) => {
   }
 };
 
-export const generateStoryWithAI = (title, author, description) => async (dispatch) => {
-
-  dispatch(fetchStart());
-  try {
-
-    // if (!title && author && description) {
-    //   throw new Error("Novel not found");
-    // }
-
-    const prompt = `Write a story about the novel titled "${title}" written by ${author}. The story should revolve around the theme: "${description}".`;
-    console.log(prompt);
-    
-
-    const genAI = new GoogleGenerativeAI("AIzaSyD4yrciJlQ4vU0HKgWo8x4PQBL6mWhrmVk" );
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
-    const result = await model.generateContent( prompt );
-
-    console.log('di novel slice', result);
-    
-    
-    const generatedStory = result?.data?.text || "No story generated.";
-    
-    console.log(generatedStory);
-    
-
-    dispatch(setGeneratedStory(generatedStory));
-  } catch (error) {
-    console.error("Error generating story with AI:", error);
-    dispatch(fetchFailure(error.message || "Error generating story with AI"));
-  }
-};

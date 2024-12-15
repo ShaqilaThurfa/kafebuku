@@ -25,6 +25,7 @@ export default function AdminPage() {
           ? error.response.data.message
           : "Something went wrong!",
       });
+      navigate("/"); 
     }
   };
 

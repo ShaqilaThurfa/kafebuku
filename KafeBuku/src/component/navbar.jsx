@@ -1,54 +1,56 @@
-import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 const NavBar = () => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    localStorage.removeItem("access_token"); 
-    navigate('/login'); 
+    localStorage.removeItem("access_token");
+    navigate("/login");
   };
 
   return (
-    <nav className="navbar navbar-expand-lg" style={{ backgroundColor: '#F5F5DC' }}>
-      <div className="container-fluid">
-        <Link className="navbar-brand" to="/" style={{ color: '#8B4513' }}>PageTurner</Link>
-        
-        <button 
-          className="navbar-toggler" 
-          type="button" 
-          data-bs-toggle="collapse" 
-          data-bs-target="#navbarNav" 
-          aria-controls="navbarNav" 
-          aria-expanded="false" 
-          aria-label="Toggle navigation"
+    <nav
+      className="navbar navbar-expand-lg"
+      style={{ backgroundColor: "#F5F5DC" }}
+    >
+      <div className="container mx-auto px-4">
+        <Link
+          to="/"
+          className="text-[1.25rem] font-bold text-[#8B4513] hover:text-[#A0522D]"
         >
-          <span className="navbar-toggler-icon"></span>
-        </button>
+          PageTurner
+        </Link>
 
-        <div className="collapse navbar-collapse" id="navbarNav">
-          <ul className="navbar-nav me-auto">
-            {/* <li className="nav-item">
-              <Link className="nav-link" to="/" style={{ color: '#8B4513' }}>Home</Link>
-            </li> */}
+        
+          <ul className="flex space-x-6">
             <li className="nav-item">
-              <Link className="nav-link" to="/mylist" style={{ color: '#8B4513' }}>My List</Link>
+              <Link className="text-[#8B4513] hover:underline" to="/mylist">
+                My List
+              </Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link" to="/myhistories" style={{ color: '#8B4513' }}>My Histories</Link>
+              <Link
+                className="text-[#8B4513] hover:underline"
+                to="/myhistories"
+              >
+                My Histories
+              </Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link" to="/all-users" style={{ color: '#8B4513' }}>AdminPage</Link>
+              <Link
+                className="text-[#8B4513] hover:underline"
+                to="/all-users"
+              >
+                AdminPage
+              </Link>
             </li>
           </ul>
           <ul className="navbar-nav">
-            {/* <li className="nav-item">
-              <Link className="nav-link" to="/register" style={{ color: '#8B4513' }}>Register</Link>
-            </li> */}
+           
             <li className="nav-item">
-              <button 
-                className="btn nav-link" 
-                style={{ color: '#8B4513', border: 'none', background: 'none' }} 
+              <button
+                className="text-[#8B4513] hover:underline focus:outline-none"
                 onClick={handleLogout}
               >
                 Logout
@@ -56,7 +58,7 @@ const NavBar = () => {
             </li>
           </ul>
         </div>
-      </div>
+      
     </nav>
   );
 };
