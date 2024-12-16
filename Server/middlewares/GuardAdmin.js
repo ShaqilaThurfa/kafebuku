@@ -6,7 +6,6 @@ module.exports = async function guardAdmin(req, res, next){
     return
   }
 
-  console.log("disini",req.user.role);
-  
+  // console.log("disini",req.user.role);
   next()
 }

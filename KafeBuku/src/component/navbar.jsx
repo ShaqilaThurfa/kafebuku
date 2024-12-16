@@ -12,7 +12,7 @@ const NavBar = () => {
 
   return (
     <nav className="navbar navbar-expand-lg bg-[#F5F5DC] relative">
-      <div className="container mx-auto px-4 flex justify-between items-center">
+      <div className="flex justify-between items-center w-full px-2">
         
         <Link
           to="/"
@@ -84,7 +84,7 @@ const NavBar = () => {
 
       
       {isMenuOpen && (
-        <div className="lg:hidden flex flex-col items-start bg-[#F5F5DC] p-4">
+        <div className="lg:hidden flex flex-col items-start bg-[#F5F5DC] px-2">
           <Link className="text-[#8B4513] hover:underline my-2" to="/mylist">
             My List
           </Link>

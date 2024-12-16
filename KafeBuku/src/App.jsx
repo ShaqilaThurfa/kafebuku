@@ -1,7 +1,6 @@
 import {
   createBrowserRouter,
   RouterProvider,
-  Route,
   redirect,
   Outlet,
 } from "react-router-dom";
@@ -14,10 +13,7 @@ import NavBar from "./component/navbar";
 import AdminPage from "./page/AdminPage";
 import Histories from "./page/PageHistories";
 import NavBarAdmin from "./component/navbarAdmin";
-
-
-
-
+import AllHistories from "./page/AllHistoriesPage";
 
 const checkAuthLoader = async () => {
   const isLoggedIn = localStorage.getItem("access_token");
@@ -72,6 +68,15 @@ const router = createBrowserRouter([
         <>
         <NavBarAdmin />
         <AdminPage />
+        </>,
+        loader: checkAuthLoader,
+      },
+      {
+        path: "/all-histories",
+        element: 
+        <>
+        <NavBarAdmin />
+        <AllHistories />
         </>,
         loader: checkAuthLoader,
       },

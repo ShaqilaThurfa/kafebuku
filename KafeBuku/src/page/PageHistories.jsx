@@ -27,10 +27,10 @@ export default function Histories() {
   }, []);
 
   return (
-    <div className="container my-5" style={{ backgroundColor: '#D8CFC4', borderRadius: '8px', padding: '20px' }}>
-      <h2 className="text-center" style={{ color: '#6F4C3E' }}>Histories</h2>
+    <div className="container p-10 my-5 max-w-screen-lg bg-[#8B4513] rounded-lg shadow-lg">
+      <h2 className="text-center mb-8 text-white text-lg font-bold">My History</h2>
       {histories.length > 0 ? (
-        <table className="table table-striped mt-4" style={{ backgroundColor: '#F5F5DC' }}>
+        <table className="table table-striped mt-4 bg-[#F5F5DC]">
           <thead style={{ backgroundColor: '#C7BBA2' }}>
             <tr>
               <th scope="col">#</th>
@@ -44,8 +44,16 @@ export default function Histories() {
               <tr key={history.id} style={{ backgroundColor: index % 2 === 0 ? '#FAEBD7' : '#F5F5DC' }}>
                 <th scope="row">{index + 1}</th>
                 <td>{history.title}</td>
-                <td>{new Date(history.borrowed_at).toLocaleDateString()}</td>
-                <td>{new Date(history.returned_at).toLocaleDateString()}</td>
+                <td>{new Date(history.borrowed_at).toLocaleDateString('idn-ID')}</td>
+                <td className="border border-gray-200 py-2">
+                    {history.returned_at ? (
+                      new Date(history.returned_at).toLocaleDateString("idn-ID")
+                    ) : (
+                      <span className="text-red-500 font-semibold">
+                        Not yet returned
+                      </span>
+                    )}
+                  </td>
               </tr>
             ))}
           </tbody>

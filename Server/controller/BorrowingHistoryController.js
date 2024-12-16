@@ -21,17 +21,4 @@ module.exports = class BorrowingHistories {
     }
   }
 
-  static async getAllHistories(req, res, next) {
-    
-    try {
-      const history = await BorrowingHistory.findAll();
-      res
-        .status(200)
-        .json(history);
-
-    } catch (error) {
-      console.log(error);
-      next(error);
-    }
-  }
 };

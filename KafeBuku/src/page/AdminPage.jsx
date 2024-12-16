@@ -29,24 +29,25 @@ export default function AdminPage() {
     }
   };
 
-  const handleOnDeleteUser = async (id) => {
-    try {
-      // console.log(id);
-      await axios.delete(`http://localhost:3001/admin/delete/${id}`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-        },
-      });
-      fetchUsers();
-    } catch (error) {
-      Swal.fire({
-        icon: "error",
-        text: error.response
-          ? error.response.data.message
-          : "Something went wrong!",
-      });
-    }
-  };
+  // const handleOnDeleteUser = async (id) => {
+  //   try {
+  //     // console.log(id);
+  //     await axios.delete(`http://localhost:3001/admin/delete/${id}`, {
+  //       headers: {
+  //         Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+  //       },
+  //     });
+  //     fetchUsers();
+  //   } catch (error) {
+  //     Swal.fire({
+  //       icon: "error",
+  //       text: error.response
+  //         ? error.response.data.message
+  //         : "Something went wrong!",
+  //     });
+  //   }
+  // };
+  
   const handleOnBanUser = async (id) => {
     console.log(id);
 
