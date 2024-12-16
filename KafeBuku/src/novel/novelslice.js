@@ -37,14 +37,16 @@ export const novelSlice = createSlice({
 
 export const { fetchStart, fetchSuccess, fetchFailure, fetchBorrowedSuccess } = novelSlice.actions;
 export default novelSlice.reducer;
+const NytimesAPI = import.meta.env.VITE_NYTIMES_API_KEY;
 
 export const fetchNovels = () => {
+
   return async (dispatch) => {
     dispatch(fetchStart());
     try {
       
       const { data } = await axios.get(
-        "https://api.nytimes.com/svc/books/v3/lists/current/young-adult.json?api-key=xdguKM4oulffrzmLoiTpfTEtDjlefPrA"
+        `https://api.nytimes.com/svc/books/v3/lists/current/young-adult.json?api-key=${NytimesAPI}`
       );
 
       
@@ -66,7 +68,6 @@ export const fetchNovels = () => {
         };
       });
 
-      console.log("Books fetched and updated: ", booksWithStatus);
       dispatch(fetchSuccess(booksWithStatus));
     } catch (error) {
       console.error("Error fetching books: ", error);
@@ -81,7 +82,7 @@ export const fetchNovelById = (novelId) => {
   return async (dispatch) => {
     dispatch(fetchStart());
     try {
-      const { data } = await axios.get("https://api.nytimes.com/svc/books/v3/lists/current/young-adult.json?api-key=5AVZw7kp8E82YLegXtL2WyiiVcbmMr94");
+      const { data } = await axios.get(`https://api.nytimes.com/svc/books/v3/lists/current/young-adult.json?api-key=${NytimesAPI}`);
       const books = data.results.books;
 
       let book = books.find(b => b.rank === novelId)

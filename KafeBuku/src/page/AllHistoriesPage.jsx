@@ -7,32 +7,32 @@ export default function AllHistories() {
   const [histories, setHistories] = useState([]);
   const navigate = useNavigate();
 
-  const fetchHistories = async () => {
-    try {
-      const { data } = await axios.get(
-        "http://localhost:3001/admin/all-histories",
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-          },
-        }
-      );
-      setHistories(data);
-      console.log(data);
-    } catch (error) {
-      Swal.fire({
-        icon: "error",
-        text: error.response
-          ? error.response.data.message
-          : "Something went wrong!",
-      });
-      navigate("/");
-    }
-  };
-
   useEffect(() => {
+    const fetchHistories = async () => {
+      try {
+        const { data } = await axios.get(
+          "http://localhost:3001/admin/all-histories",
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+            },
+          }
+        );
+        setHistories(data);
+        console.log(data);
+      } catch (error) {
+        Swal.fire({
+          icon: "error",
+          text: error.response
+            ? error.response.data.message
+            : "Something went wrong!",
+        });
+        navigate("/");
+      }
+    };
+
     fetchHistories();
-  }, []);
+  }, [navigate]);
 
   return (
     <div className="container mx-auto px-4 mt-8">

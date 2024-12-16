@@ -39,7 +39,6 @@ export default function LoginPage() {
 
   const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
 
-  // console.log(googleClientId, 'ini google client id');
   useEffect(() => {
     window.google.accounts.id.initialize({
       client_id: googleClientId,

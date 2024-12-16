@@ -8,7 +8,7 @@ const BookList = ({ novels, onBorrow }) => {
           <div key={novel.rank} className="border bg-white shadow-md rounded p-4 flex flex-col h-full">
             <img
               src={novel.book_image}
-              className="w-full h-72 object-cover mb-2"
+              className="w-full aspect-[3/4] object-cover mb-2"
               alt={novel.title}
             />
             <h3 className="text-lg font-bold text-black mb-1">{novel.title}</h3>

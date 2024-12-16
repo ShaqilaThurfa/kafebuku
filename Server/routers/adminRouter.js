@@ -6,7 +6,8 @@ const router = require("express").Router();
 
 
 
-router.post("/add-admin", GuardAdmin, AdminController.addAdmin);
+router.put("/add-admin/:id", GuardAdmin, AdminController.addAdmin);
+router.put("/turn-into-user/:id", GuardAdmin, AdminController.turnIntoUser);
 router.get("/all-users", GuardAdmin, AdminController.getUsers);
 router.put("/ban/:id", GuardAdmin, AdminController.banned);
 router.put("/unban/:id", GuardAdmin, AdminController.Unbanned);

@@ -2,19 +2,37 @@ const { User, BorrowingHistory } = require("../models");
 const { Op, literal } = require("sequelize");
 
 module.exports = class AdminController {
-  static async addAdmin(req, res, next) {
-    const { fullName, email, Password, status } = req.body;
-
+  static async turnIntoUser(req, res, next) {
+    const id = req.params.id;
     try {
-      await User.create({
-        fullName,
-        email,
-        role: "Admin",
-        Password,
-        status,
-      });
+      const user = await User.findByPk(id);
+      if (!user) {
+        throw { name: "NotFound", message: "User not found" };
+      }
+      await user.update({ role: "user" });
+      await user.save();
+      res
+        .status(200)
+        .json({ message: `User with ID ${id} has been turned into user.`, user });
+    } catch (error) {
+      console.log(error);
+      next(error);
+    }
+  }
 
-      res.status(201).json({ message: "Adding admin to this page" });
+  static async addAdmin(req, res, next) {
+    const id = req.params.id;
+    
+    try {
+      const user = await User.findByPk(id);
+      if (!user) {
+        throw { name: "NotFound", message: "User not found" };
+      }
+      await user.update({ role: "admin" });
+      await user.save();
+      res
+        .status(200)
+        .json({ message: `User with ID ${id} has been added as admin.`, user });
     } catch (error) {
       console.log(error);
 

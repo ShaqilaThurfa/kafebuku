@@ -9,14 +9,11 @@ export default function AdminPage() {
 
   const fetchUsers = async () => {
     try {
-      const { data } = await axios.get(
-        "http://localhost:3001/admin/all-users",
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-          },
-        }
-      );
+      const { data } = await axios.get("http://localhost:3001/admin/all-users", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+        },
+      });
       setUsers(data);
     } catch (error) {
       Swal.fire({
@@ -25,58 +22,126 @@ export default function AdminPage() {
           ? error.response.data.message
           : "Something went wrong!",
       });
-      navigate("/"); 
+      navigate("/");
     }
   };
 
-  // const handleOnDeleteUser = async (id) => {
-  //   try {
-  //     // console.log(id);
-  //     await axios.delete(`http://localhost:3001/admin/delete/${id}`, {
-  //       headers: {
-  //         Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-  //       },
-  //     });
-  //     fetchUsers();
-  //   } catch (error) {
-  //     Swal.fire({
-  //       icon: "error",
-  //       text: error.response
-  //         ? error.response.data.message
-  //         : "Something went wrong!",
-  //     });
-  //   }
-  // };
-  
+  const handleOnMakeUser = async (id) => {
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: "Do you want to turn this user into User?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#28a745",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, turn into User!",
+    });
+
+    if (result.isConfirmed) {
+      try {
+        const response = await axios.put(
+          `http://localhost:3001/admin/turn-into-user/${id}`,
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+            },
+          }
+        );
+        setUsers((prevUsers) =>
+          prevUsers.map((user) =>
+            user.id === id ? { ...user, role: "user" } : user
+          )
+        );
+        Swal.fire("Success!", "The user is now a User.", "success");
+      } catch (error) {
+        Swal.fire({
+          icon: "error",
+          text: error.response
+            ? error.response.data.message
+            : "Something went wrong!",
+        });
+      }
+    }
+  }
+
+  const handleOnMakeAdmin = async (id) => {
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: "Do you want to promote this user to Admin?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#28a745",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, make Admin!",
+    });
+
+    if (result.isConfirmed) {
+      try {
+        const response = await axios.put(
+          `http://localhost:3001/admin/add-admin/${id}`,
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+            },
+          }
+        );
+        
+        setUsers((prevUsers) =>
+          prevUsers.map((user) =>
+            user.id === id ? { ...user, role: "Admin" } : user
+          )
+        );
+        Swal.fire("Success!", "The user is now an Admin.", "success");
+
+      } catch (error) {
+        Swal.fire({
+          icon: "error",
+          text: error.response
+            ? error.response.data.message
+            : "Something went wrong!",
+        });
+      }
+    }
+  };
+
   const handleOnBanUser = async (id) => {
-    console.log(id);
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: "Do you really want to ban this user?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Yes, ban it!",
+    });
 
-    try {
-      await axios.put(
-        `http://localhost:3001/admin/ban/${id}`,
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-          },
-        }
-      );
-      // console.log("sampe sini kah kamu?");
-
-      fetchUsers();
-    } catch (error) {
-      Swal.fire({
-        icon: "error",
-        text: error.response
-          ? error.response.data.message
-          : "Something went wrong!",
-      });
+    if (result.isConfirmed) {
+      try {
+        await axios.put(
+          `http://localhost:3001/admin/ban/${id}`,
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+            },
+          }
+        );
+        Swal.fire("Banned!", "The user has been banned.", "success");
+        fetchUsers();
+      } catch (error) {
+        Swal.fire({
+          icon: "error",
+          text: error.response
+            ? error.response.data.message
+            : "Something went wrong!",
+        });
+      }
     }
   };
 
   const handleOnUnbannedUser = async (id) => {
-    console.log(id);
-
     try {
       await axios.put(
         `http://localhost:3001/admin/unban/${id}`,
@@ -87,7 +152,6 @@ export default function AdminPage() {
           },
         }
       );
-      // console.log("sampe sini kah kamu?");
       fetchUsers();
     } catch (error) {
       Swal.fire({
@@ -101,79 +165,101 @@ export default function AdminPage() {
 
   useEffect(() => {
     fetchUsers();
-  }, []);
+  },[]);
 
   return (
-    <div className="container my-3">
-      <table
-        className="table table-striped mt-4"
-        style={{ backgroundColor: "#F5F5DC" }}
-      >
-        <thead style={{ backgroundColor: "#D8CFC4" }}>
+    <div className="container mx-auto my-5 px-4">
+      <table className="w-full table-auto border-collapse border border-gray-300">
+        <thead className="bg-gray-200">
           <tr>
-            <th scope="col" style={{ textAlign: "center" }}>
-              #
-            </th>
-            <th scope="col" style={{ textAlign: "center" }}>
+            <th className="border border-gray-300 px-4 py-2 text-center">#</th>
+            <th className="border border-gray-300 px-4 py-2 text-center">
               Full Name
             </th>
-            <th scope="col" style={{ textAlign: "center" }}>
+            <th className="border border-gray-300 px-4 py-2 text-center">
               Email
             </th>
-            <th scope="col" style={{ textAlign: "center" }}>
+            <th className="border border-gray-300 px-4 py-2 text-center">
               Status
             </th>
-            <th scope="col" style={{ textAlign: "center" }}>
+            <th className="border border-gray-300 px-4 py-2 text-center">
               Actions
             </th>
-            <th scope="col" style={{ textAlign: "center" }}>
+            <th className="border border-gray-300 px-4 py-2 text-center">
               Role
             </th>
           </tr>
         </thead>
-
         <tbody>
           {users.length > 0 ? (
             users.map((user, index) => (
               <tr
                 key={user.id}
-                style={{
-                  backgroundColor: index % 2 === 0 ? "#FAF3E0" : "#F5F5DC",
-                }}
+                className={`${
+                  index % 2 === 0 ? "bg-gray-100" : "bg-white"
+                } hover:bg-gray-50`}
               >
-                <th scope="row" style={{ textAlign: "center" }}>
+                <td className="border border-gray-300 px-4 py-2 text-center">
                   {index + 1}
-                </th>
-                <td style={{ textAlign: "center" }}>{user.fullName}</td>
-                <td style={{ textAlign: "center" }}>{user.email}</td>
-                <td style={{ textAlign: "center" }}>
+                </td>
+                <td className="border border-gray-300 px-4 py-2 text-center">
+                  {user.fullName}
+                </td>
+                <td className="border border-gray-300 px-4 py-2 text-center">
+                  {user.email}
+                </td>
+                <td className="border border-gray-300 px-4 py-2 text-center">
                   <span
-                    className={`badge ${
-                      user.status === "active" ? "bg-success" : "bg-secondary"
-                    } ms-2`}
+                    className={`inline-block px-2 py-1 text-xs font-semibold rounded ${
+                      user.status === "active"
+                        ? "bg-green-500 text-white"
+                        : "bg-gray-400 text-white"
+                    }`}
                   >
                     {user.status}
                   </span>
                 </td>
-                <td className="d-flex gap-2 justify-content-center">
-                  <button
-                    className="btn btn-warning"
-                    onClick={() => handleOnUnbannedUser(user.id)}
-                  >
-                    Unban
-                  </button>
-                  <button
-                    className="btn btn-danger me-2"
-                    onClick={() => handleOnBanUser(user.id)}
-                  >
-                    Ban
-                  </button>
+                <td className="border border-gray-300 px-4 py-2 text-center">
+                  <div className="flex flex-wrap justify-center gap-2">
+                    {user.status === "active" ? (
+                      <button
+                        className="bg-red-500 hover:bg-red-600 text-white text-sm font-semibold px-3 py-1 rounded"
+                        onClick={() => handleOnBanUser(user.id)}
+                      >
+                        Ban
+                      </button>
+                    ) : (
+                      <button
+                        className="bg-yellow-500 hover:bg-yellow-600 text-white text-sm font-semibold px-3 py-1 rounded"
+                        onClick={() => handleOnUnbannedUser(user.id)}
+                      >
+                        Unban
+                      </button>
+                    )}
+                    {user.role === "user" ? (
+                      <button
+                        className="bg-blue-500 hover:bg-blue-600 text-white text-sm font-semibold px-3 py-1 rounded"
+                        onClick={() => handleOnMakeAdmin(user.id)}
+                      >
+                        Make Admin
+                      </button>
+                    ) : (
+                      <button
+                        className="bg-blue-500 hover:bg-blue-600 text-white text-sm font-semibold px-3 py-1 rounded"
+                        onClick={() => handleOnMakeUser(user.id)}
+                      >
+                        Make User
+                      </button>
+                    )}
+                  </div>
                 </td>
-                <td style={{ textAlign: "center" }}>
+                <td className="border border-gray-300 px-4 py-2 text-center">
                   <span
-                    className={`badge ${
-                      user.role === "Admin" ? "bg-success" : "bg-secondary"
-                    } ms-2`}
+                    className={`inline-block px-2 py-1 text-xs font-semibold rounded ${
+                      user.role === "Admin"
+                        ? "bg-green-500 text-white"
+                        : "bg-gray-400 text-white"
+                    }`}
                   >
                     {user.role}
                   </span>
@@ -182,7 +268,10 @@ export default function AdminPage() {
             ))
           ) : (
             <tr>
-              <td colSpan="6" className="text-center">
+              <td
+                colSpan="6"
+                className="border border-gray-300 px-4 py-2 text-center"
+              >
                 No users found
               </td>
             </tr>
