@@ -1,18 +1,20 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchNovels } from "../novel/novelslice";
+import { fetchNovels, fetchNovelByUserId } from "../novel/novelslice";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import GeminiChat from "../component/gemini";
-import NavBar from "../component/navbar";
 import bgbuku from "../bg/bgbuku.jpg";
 import Swal from "sweetalert2";
+import BookList from "../component/BookList";
+
 
 export default function HomePage() {
   const dispatch = useDispatch();
   const novels = useSelector((state) => state.novel.items);
   const loading = useSelector((state) => state.novel.loading);
   const navigate = useNavigate();
+
 
   useEffect(() => {
     dispatch(fetchNovels());
@@ -38,7 +40,8 @@ export default function HomePage() {
         text: "Book borrowed successfully!",
         icon: "success",
       });
-
+      
+      dispatch(fetchNovelByUserId());
       navigate("/mylist");
     } catch (error) {
       Swal.fire({
@@ -71,40 +74,7 @@ export default function HomePage() {
             {loading ? (
               <p className="text-center">Loading novels...</p>
             ) : (
-              novels.map((novel) => (
-                <div
-                  key={novel.rank}
-                  className="col-md-6 col-lg-4 d-flex align-items-stretch"
-                >
-                  <div className="card shadow-sm w-full">
-                    <img
-                      src={novel.book_image}
-                      className="card-img-top"
-                      alt={novel.title}
-                    />
-                    <div className="card-body d-flex flex-column">
-                      <h5 className="card-title text-truncate">
-                        {novel.title}
-                      </h5>
-                      <h6 className="card-subtitle mb-2 text-muted">
-                        {novel.author}
-                      </h6>
-                      <p className="card-text" style={{ fontSize: "0.9rem" }}>
-                        {novel.description}
-                      </p>
-                      <div className="mt-auto">
-                        <span className="badge bg-success mb-2">Available</span>
-                        <button
-                          className="btn btn-primary w-100"
-                          onClick={() => handleOnBorrow(novel)}
-                        >
-                          Borrow
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ))
+              <BookList novels={novels} onBorrow={handleOnBorrow} />
             )}
           </div>
         </div>

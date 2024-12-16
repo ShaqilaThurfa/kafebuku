@@ -1,15 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
-
-
 export const novelSlice = createSlice({
   name: "novel",
   initialState: {
     items: [],
+    borrowedBooks: {},
     errors: null,
     loading: false,
-    // generatedStory: "",
   },
   reducers: {
     fetchStart: (state) => {
@@ -24,24 +22,60 @@ export const novelSlice = createSlice({
       state.loading = false;
       state.errors = action.payload;
     },
+    fetchBorrowedSuccess: (state, action) => {
+      const borrowedBooks = action.payload; 
+      state.borrowedBooks = {}; 
+      borrowedBooks.forEach((book) => {
+        state.borrowedBooks[book.bookId] = "borrowed"; 
+      });
+    },
+    
   },
 });
 
-export const { fetchStart, fetchSuccess, fetchFailure, setGeneratedStory } = novelSlice.actions;
+
+
+export const { fetchStart, fetchSuccess, fetchFailure, fetchBorrowedSuccess } = novelSlice.actions;
 export default novelSlice.reducer;
 
 export const fetchNovels = () => {
   return async (dispatch) => {
-    dispatch(fetchStart()); 
+    dispatch(fetchStart());
     try {
-      const { data } = await axios.get("https://api.nytimes.com/svc/books/v3/lists/current/young-adult.json?api-key=5AVZw7kp8E82YLegXtL2WyiiVcbmMr94");
-      dispatch(fetchSuccess(data.results.books));
+      
+      const { data } = await axios.get(
+        "https://api.nytimes.com/svc/books/v3/lists/current/young-adult.json?api-key=xdguKM4oulffrzmLoiTpfTEtDjlefPrA"
+      );
+
+      
+      const response = await axios.get("http://localhost:3001/user/mybooklist", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+        },
+      });
+
+      const borrowedBooks = response.data; 
+      
+      const booksWithStatus = data.results.books.map((book) => {
+        const isBorrowed = borrowedBooks.some(
+          (borrowed) => borrowed.bookId === book.rank
+        );
+        return {
+          ...book,
+          status: isBorrowed ? "borrowed" : "available", 
+        };
+      });
+
+      console.log("Books fetched and updated: ", booksWithStatus);
+      dispatch(fetchSuccess(booksWithStatus));
     } catch (error) {
-      console.error("Error fetching data: ", error);
+      console.error("Error fetching books: ", error);
       dispatch(fetchFailure(error?.message));
     }
   };
 };
+
+
 
 export const fetchNovelById = (novelId) => {
   return async (dispatch) => {
@@ -66,16 +100,18 @@ export const fetchNovelById = (novelId) => {
 };
 
 export const fetchNovelByUserId = () => async (dispatch) => {
-  dispatch(fetchStart());
+  dispatch(fetchStart()); 
   try {
+    
     const { data } = await axios.get("http://localhost:3001/user/mybooklist", {
       headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` },
     });
 
-    console.log("Updated book list: ", data);
+    console.log("Updated borrowed books: ", data);
 
     if (data && data.length > 0) {
-      dispatch(fetchSuccess(data)); 
+      
+      dispatch(fetchSuccess(data));
     } else {
       dispatch(fetchFailure("No borrowed books found."));
     }
@@ -84,4 +120,5 @@ export const fetchNovelByUserId = () => async (dispatch) => {
     dispatch(fetchFailure(error.message || "Error fetching user borrowed books"));
   }
 };
+
 

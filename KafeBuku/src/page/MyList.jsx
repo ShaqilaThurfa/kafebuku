@@ -13,6 +13,7 @@ export default function MyListPage() {
   const [title, setTitle] = useState("");
   const [isModalOpen, setModalOpen] = useState(false);
   const [generatedStory, setGeneratedStory] = useState("");
+  const [generatingBookId, setGeneratingBookId] = useState(null);
 
   useEffect(() => {
     dispatch(fetchNovelByUserId());
@@ -20,8 +21,9 @@ export default function MyListPage() {
 
   const handleOnReturn = async (bookId) => {
     try {
-
-      dispatch(fetchSuccess(myBooks.filter((novel) => novel.bookId !== bookId)));
+      dispatch(
+        fetchSuccess(myBooks.filter((novel) => novel.bookId !== bookId))
+      );
 
       await axios.put(
         `http://localhost:3001/user/returnbook/${bookId}`,
@@ -48,8 +50,9 @@ export default function MyListPage() {
     }
   };
 
-  const handleGenerateStory = async (title, description) => {
+  const handleGenerateStory = async (bookId, title, description) => {
     try {
+      setGeneratingBookId(bookId);
       setTitle(title);
       const prompt = `Buat cerita dengan judul "${title}" dengan deskripsi ${description} dalam bahasa Indonesia dengan panjang kata maksimal 500 kata, jangan sertakan judul, penulis dan deskripsi dalam cerita.`;
       const genAI = new GoogleGenerativeAI(
@@ -71,98 +74,86 @@ export default function MyListPage() {
       });
       setGeneratedStory("Failed to generate story. Please try again.");
       setModalOpen(true);
+    } finally {
+      setGeneratingBookId(null);
     }
   };
 
   return (
-    <div
-      className="container mx-auto px-5 my-5 max-w-full overflow-x-hidden" 
-      style={{
-        backgroundColor: "#8B4513",
-        color: "white",
-        borderRadius: "8px",
-        padding: "20px",
-      }}
-    >
-      <h2 className="text-center">My Borrowed Books</h2>
-      {loading ? (
-        <p>Loading books...</p>
+    <div className="container p-10 my-5 max-w-screen-lg bg-[#8B4513] text-white text-lg font-bold rounded-lg shadow-lg gap-y-8">
+      {myBooks.length === 0 ? (
+        <p>You haven&apos;t borrowed any books.</p>
       ) : (
-        <div className="row g-4 justify-content-center">
-          {myBooks.map((novel) => (
-            <div
-              key={novel.id}
-              className="col-md-6 col-lg-4 d-flex align-items-stretch"
-            >
-              <div
-                className="card shadow-sm mx-auto w-full max-w-[80%] bg-[#F5F5DC]"
-              >
-                <div className="card-body d-flex flex-column">
-                  <h5 className="card-title text-truncate">{novel.title}</h5>
-                  <h6 className="card-subtitle mb-2 text-muted">
-                    {novel.author}
-                  </h6>
-                  <div className="mt-auto">
-                    <span className="badge bg-success mb-2">
-                      {novel.status}
-                    </span>
-                    <button
-                      className="btn btn-danger w-100 mb-2"
-                      onClick={() => handleOnReturn(novel.bookId)}
-                    >
-                      Return
-                    </button>
-                    <button
-                      className="btn btn-info w-100"
-                      onClick={() =>
-                        handleGenerateStory(novel.title, novel.description)
-                      }
-                    >
-                      Generate Story
-                    </button>
+        <>
+          <h2 className="text-center mb-8">My Borrowed Books</h2>
+          {loading ? (
+            <p>Loading books...</p>
+          ) : (
+            <div className="flex flex-wrap gap-y-4 justify-center">
+              {myBooks.map((novel) => (
+                <div
+                  key={novel.id}
+                  className="flex card shadow-sm mx-3 w-full md:basis-1/2 lg:basis-1/4 max-w-sm bg-[#F5F5DC]"
+                >
+                  <div className="card-body flex flex-col">
+                    <h5 className="card-title text-truncate">{novel.title}</h5>
+                    <h6 className="card-subtitle mb-2 text-muted">
+                      {novel.author}
+                    </h6>
+                    <div className="mt-auto">
+                      <span className="badge bg-success mb-2">
+                        {novel.status}
+                      </span>
+                      <button
+                        className="btn btn-danger w-100 mb-2"
+                        onClick={() => handleOnReturn(novel.bookId)}
+                      >
+                        Return
+                      </button>
+                      <button
+                        className="btn btn-info w-100"
+                        onClick={() =>
+                          handleGenerateStory(
+                            novel.bookId,
+                            novel.title,
+                            novel.description
+                          )
+                        }
+                        disabled={generatingBookId === novel.bookId} 
+                      >
+                        {generatingBookId === novel.bookId
+                          ? "Generating..."
+                          : "Generate Story"}
+                      </button>
+                    </div>
                   </div>
                 </div>
-              </div>
+              ))}
             </div>
-          ))}
-        </div>
+          )}
+        </>
       )}
 
       {isModalOpen && (
-        <div className="modal show d-block" tabIndex="-1" role="dialog">
-          <div className="modal-dialog" role="document">
-            <div
-              className="modal-content"
-              style={{ backgroundColor: "#8B4513" }}
-            >
-              <div className="modal-header">
-                <h5
-                  className="modal-title"
-                  style={{ color: "#ffff" }}
-                >
-                  {title}
-                </h5>
-                <button
-                  type="button"
-                  className="btn-close white"
-                  onClick={() => setModalOpen(false)}
-                ></button>
-              </div>
-              <div
-                className="modal-body"
-                style={{
-                  maxHeight: "400px",
-                  overflowY: "auto",
-                  padding: "20px",
-                  backgroundColor: "#f9f9f9",
-                  color: "#000",
-                }}
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white p-5 rounded-lg w-11/12 max-w-lg">
+            <div className="flex justify-between items-center border-b pb-2">
+              <h5 className="text-lg text-black font-bold">{title}</h5>
+              <button
+                className="text-red-500 font-bold"
+                onClick={() => setModalOpen(false)}
               >
+                X
+              </button>
+            </div>
+            <div className="overflow-y-auto max-h-80 my-4 text-sm text-black font-normal justify-end">
+              {generatingBookId ? (
+                <p className="text-center text-gray-500">
+                  Generating story, please wait...
+                </p>
+              ) : (
                 <p>{generatedStory || "No story generated yet."}</p>
-              </div>
-
-              <div className="modal-footer">
-              </div>
+              )}
             </div>
           </div>
         </div>
