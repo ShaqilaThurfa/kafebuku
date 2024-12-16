@@ -103,10 +103,7 @@ export default function AdminPage() {
   }, []);
 
   return (
-    <div className="container my-5">
-      <h2 className="text-center" style={{ color: "#6F4C3E" }}>
-        User List
-      </h2>
+    <div className="container my-3">
       <table
         className="table table-striped mt-4"
         style={{ backgroundColor: "#F5F5DC" }}

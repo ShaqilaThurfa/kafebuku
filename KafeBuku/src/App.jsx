@@ -13,6 +13,8 @@ import MyList from "./page/MyList";
 import NavBar from "./component/navbar";
 import AdminPage from "./page/AdminPage";
 import Histories from "./page/PageHistories";
+import NavBarAdmin from "./component/navbarAdmin";
+
 
 
 
@@ -26,6 +28,15 @@ const checkAuthLoader = async () => {
   }
 };
 
+const checkisLogin = async () => {
+  const isLoggedIn = localStorage.getItem("access_token");
+  if (isLoggedIn) {
+    throw redirect("/"); 
+  } else{
+    return null
+  }
+}
+
 const router = createBrowserRouter([
   {
     path: "/register",
@@ -34,6 +45,7 @@ const router = createBrowserRouter([
   {
     path: "/login",
     element: <LoginPage />,
+    loader: checkisLogin,
   },
   {
    
@@ -56,7 +68,11 @@ const router = createBrowserRouter([
       },
       {
         path: "/all-users",
-        element: <AdminPage />,
+        element: 
+        <>
+        <NavBarAdmin />
+        <AdminPage />
+        </>,
         loader: checkAuthLoader,
       },
       {

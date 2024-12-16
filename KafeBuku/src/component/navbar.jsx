@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 const NavBar = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false); // State untuk kontrol dropdown
+  const [isMenuOpen, setIsMenuOpen] = useState(false); 
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -13,7 +13,7 @@ const NavBar = () => {
   return (
     <nav className="navbar navbar-expand-lg bg-[#F5F5DC] relative">
       <div className="container mx-auto px-4 flex justify-between items-center">
-        {/* Logo */}
+        
         <Link
           to="/"
           className="text-[1.25rem] font-bold text-[#8B4513] hover:text-[#A0522D]"
