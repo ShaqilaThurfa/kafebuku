@@ -6,15 +6,6 @@ const helmet = require("helmet");
 
 const app = express();
 const port = process.env.PORT || 3001;
-//HRKU-f1be4a08-e8b1-437f-8f3d-39d2f9ed7972
-//heroku config:set HEROKU_API_KEY=<your_api_key>
-
-//heroku login -i
-//heroku config:set HEROKU_API_KEY=HRKU-f1be4a08-e8b1-437f-8f3d-39d2f9ed7972 --app kafebuku
-
-//export HEROKU_API_KEY=HRKU-f1be4a08-e8b1-437f-8f3d-39d2f9ed7972
-
-
 
 
 app.use(morgan("dev"));
@@ -24,11 +15,12 @@ app.use(express.json());
 app.use(cors());
 
 
-app.use(express.static(path.join(__dirname, "../Kafebuku/build")));
+app.use(express.static(path.join(__dirname, "../Kafebuku/dist")));
 app.get("*", (req, res, next) => {
-    if (req.originalUrl.startsWith("/api")) return next(); 
-    res.sendFile(path.join(__dirname, "../Kafebuku/build", "index.html"));
+  if (req.originalUrl.startsWith("/api")) return next();
+  res.sendFile(path.join(__dirname, "../Kafebuku/dist", "index.html"));
 });
+
 
 
 
@@ -55,3 +47,11 @@ app.listen(port, () => {
 })
 
 module.exports = app;
+
+//HRKU-f1be4a08-e8b1-437f-8f3d-39d2f9ed7972
+//heroku config:set HEROKU_API_KEY=<your_api_key>
+
+//heroku login -i
+//heroku config:set HEROKU_API_KEY=HRKU-f1be4a08-e8b1-437f-8f3d-39d2f9ed7972 --app kafebuku
+
+//export HEROKU_API_KEY=HRKU-f1be4a08-e8b1-437f-8f3d-39d2f9ed7972
