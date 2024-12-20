@@ -42,7 +42,10 @@ module.exports = class AdminController {
 
   static async getUsers(req, res, next) {
     try {
-      const users = await User.findAll();
+      const users = await User.findAll({
+        attributes: { exclude: ["password"] },
+        order: [["id", "ASC"]]
+      });
 
       res.status(201).json(users);
     } catch (error) {

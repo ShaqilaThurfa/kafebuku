@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "nodemon app.js",
     "pre:test": "npx sequelize db:migrate:undo:all --env test && npx sequelize db:migrate --env test",
-    "test": "npm run pre:test && jest --verbose --detectOpenHandles --forceExit --runInBand --coverage"
+    "test": "npm run pre:test && jest --verbose --detectOpenHandles --forceExit --runInBand --coverage",
+    "start": "node app.js"
   },
   "keywords": [],
   "author": "",
@@ -19,7 +20,9 @@
     "express": "^4.21.1",
     "glob": "^11.0.0",
     "google-auth-library": "^9.14.2",
+    "helmet": "^8.0.0",
     "jsonwebtoken": "^9.0.2",
+    "morgan": "^1.10.0",
     "pg": "^8.13.1",
     "react-redux": "^9.1.2",
     "sequelize": "^6.37.5"

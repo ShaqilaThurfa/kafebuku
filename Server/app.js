@@ -1,16 +1,35 @@
-const cors = require('cors')
+const express = require("express");
+const cors = require("cors");
+const path = require("path");
+const morgan = require("morgan");
+const helmet = require("helmet");
+
+const app = express();
+const port = process.env.PORT || 3001;
+//HRKU-f1be4a08-e8b1-437f-8f3d-39d2f9ed7972
+//heroku config:set HEROKU_API_KEY=<your_api_key>
+
+//heroku login -i
+//heroku config:set HEROKU_API_KEY=HRKU-f1be4a08-e8b1-437f-8f3d-39d2f9ed7972 --app kafebuku
+
+//export HEROKU_API_KEY=HRKU-f1be4a08-e8b1-437f-8f3d-39d2f9ed7972
 
 
 
-const express = require("express")
-const app = express()
-const port = 3001
 
-// app.post('/user/register', (req, res) => {
-//   res.send('Hello World!')
-// })
+app.use(morgan("dev"));
+app.use(helmet());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+app.use(cors());
 
-app.use(cors())
+
+app.use(express.static(path.join(__dirname, "../Kafebuku/build")));
+app.get("*", (req, res, next) => {
+    if (req.originalUrl.startsWith("/api")) return next(); 
+    res.sendFile(path.join(__dirname, "../Kafebuku/build", "index.html"));
+});
+
 
 
 const Adminrouter = require('./routers/adminRouter')
@@ -19,19 +38,7 @@ const UserBookListRouter = require('./routers/UserBookListRouter')
 const UserRouter = require('./routers/userRouter')
 
 const Authentication = require('./middlewares/Authentication')
-const GuardAdmin = require('./middlewares/GuardAdmin')
-const NotBanned = require('./middlewares/NotBanned')
 const ErrorHandler = require('./middlewares/ErrorHandler')
-const UserController = require('./controller/UserController')
-
-// const UserController = require('./controller/UserController')
-
-app.use(express.urlencoded( { extended: true}))
-app.use(express.json())
-
-
-
-
 
 
 app.use('/user', UserRouter)

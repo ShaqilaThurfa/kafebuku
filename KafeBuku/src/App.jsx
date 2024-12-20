@@ -4,47 +4,73 @@ import {
   redirect,
   Outlet,
 } from "react-router-dom";
-
-import RegisterPage from "./page/registrasipage";
-import LoginPage from "./page/loginpage";
-import HomePage from "./page/Homepage";
-import MyList from "./page/MyList";
+import { lazy, Suspense } from "react";
 import NavBar from "./component/navbar";
-import AdminPage from "./page/AdminPage";
-import Histories from "./page/PageHistories";
 import NavBarAdmin from "./component/navbarAdmin";
-import AllHistories from "./page/AllHistoriesPage";
+import PropTypes from 'prop-types';
 
+
+const LoadingSpinner = () => (
+  <div className="flex items-center justify-center h-screen">
+    <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+  </div>
+);
+
+
+const LazyLoader = ({ children }) => (
+  <Suspense fallback={<LoadingSpinner />}>{children}</Suspense>
+);
+
+LazyLoader.propTypes = {
+  children: PropTypes.node.isRequired, 
+};
+
+
+const RegisterPage = lazy(() => import("./page/registrasipage"));
+const LoginPage = lazy(() => import("./page/loginpage"));
+const HomePage = lazy(() => import("./page/Homepage"));
+const MyList = lazy(() => import("./page/MyList"));
+const AdminPage = lazy(() => import("./page/AdminPage"));
+const Histories = lazy(() => import("./page/PageHistories"));
+const AllHistories = lazy(() => import("./page/AllHistoriesPage"));
+
+// Auth loaders
 const checkAuthLoader = async () => {
   const isLoggedIn = localStorage.getItem("access_token");
   if (!isLoggedIn) {
-    throw redirect("/login"); 
-  } else{
-    return null
+    throw redirect("/login");
   }
+  return null;
 };
 
 const checkisLogin = async () => {
   const isLoggedIn = localStorage.getItem("access_token");
   if (isLoggedIn) {
-    throw redirect("/"); 
-  } else{
-    return null
+    throw redirect("/");
   }
-}
+  return null;
+};
 
+// Router setup
 const router = createBrowserRouter([
   {
     path: "/register",
-    element: <RegisterPage />,
+    element: (
+      <LazyLoader>
+        <RegisterPage />
+      </LazyLoader>
+    ),
   },
   {
     path: "/login",
-    element: <LoginPage />,
+    element: (
+      <LazyLoader>
+        <LoginPage />
+      </LazyLoader>
+    ),
     loader: checkisLogin,
   },
   {
-   
     element: (
       <>
         <NavBar />
@@ -54,35 +80,53 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <HomePage />,
-        loader: checkAuthLoader, 
+        element: (
+          <LazyLoader>
+            <HomePage />
+          </LazyLoader>
+        ),
+        loader: checkAuthLoader,
       },
       {
         path: "/mylist",
-        element: <MyList />,
+        element: (
+          <LazyLoader>
+            <MyList />
+          </LazyLoader>
+        ),
         loader: checkAuthLoader,
       },
       {
         path: "/all-users",
-        element: 
-        <>
-        <NavBarAdmin />
-        <AdminPage />
-        </>,
+        element: (
+          <LazyLoader>
+            <>
+              <NavBarAdmin />
+              <AdminPage />
+            </>
+          </LazyLoader>
+        ),
         loader: checkAuthLoader,
       },
       {
         path: "/all-histories",
-        element: 
-        <>
-        <NavBarAdmin />
-        <AllHistories />
-        </>,
+        element: (
+          <LazyLoader>
+            <>
+              <NavBarAdmin />
+              <AllHistories />
+            </>
+          </LazyLoader>
+        ),
         loader: checkAuthLoader,
       },
       {
         path: "/myhistories",
-        element: <Histories />,
+        element: (
+          <LazyLoader>
+            <Histories />
+          </LazyLoader>
+        ),
         loader: checkAuthLoader,
       },
     ],
