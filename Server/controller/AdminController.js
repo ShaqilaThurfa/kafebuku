@@ -47,6 +47,8 @@ module.exports = class AdminController {
         order: [["id", "ASC"]]
       });
 
+      console.log(users);
+
       res.status(201).json(users);
     } catch (error) {
       console.log(error);

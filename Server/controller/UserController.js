@@ -73,6 +73,7 @@ module.exports = class UserController {
     const { token } = req.headers;
     const client = new OAuth2Client();
     const googleClientId = process.env.GOOGLE_CLIENT_ID;
+    console.log(googleClientId)
     try {
       const ticket = await client.verifyIdToken({
         idToken: token,

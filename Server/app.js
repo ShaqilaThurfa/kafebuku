@@ -15,11 +15,7 @@ app.use(express.json());
 app.use(cors());
 
 
-app.use(express.static(path.join(__dirname, "../Kafebuku/dist")));
-app.get("*", (req, res, next) => {
-  if (req.originalUrl.startsWith("/api")) return next();
-  res.sendFile(path.join(__dirname, "../Kafebuku/dist", "index.html"));
-});
+
 
 
 
@@ -42,9 +38,18 @@ app.use('/admin',Adminrouter)
 
 app.use(ErrorHandler)
 
+
+app.use(express.static(path.join(__dirname, "../Kafebuku/dist")));
+app.get("*", (req, res, next) => {
+  if (req.originalUrl.startsWith("/api")) return next();
+  res.sendFile(path.join(__dirname, "../Kafebuku/dist", "index.html"));
+});
+
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })
+
+
 
 module.exports = app;
 
