@@ -1,0 +1,11 @@
+{
+  "name": "kafebuku",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "cd Server && npm start",
+    "client": "cd KafeBuku && npm start",
+    "build-client": "cd KafeBuku && npm run build",
+    "deploy": "npm run build-client && cd Server && npm start"
+  },
+  "private": true
+}
