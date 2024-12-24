@@ -65,7 +65,7 @@ export default function AdminPage() {
         });
       }
     }
-  }
+  };
 
   const handleOnMakeAdmin = async (id) => {
     const result = await Swal.fire({
@@ -89,14 +89,13 @@ export default function AdminPage() {
             },
           }
         );
-        
+
         setUsers((prevUsers) =>
           prevUsers.map((user) =>
             user.id === id ? { ...user, role: "Admin" } : user
           )
         );
         Swal.fire("Success!", "The user is now an Admin.", "success");
-
       } catch (error) {
         Swal.fire({
           icon: "error",
@@ -167,7 +166,7 @@ export default function AdminPage() {
 
   useEffect(() => {
     fetchUsers();
-  },[]);
+  }, []);
 
   return (
     <div className="container mx-auto my-5 px-4">
@@ -238,7 +237,7 @@ export default function AdminPage() {
                         Unban
                       </button>
                     )}
-                    {user.role === "user" ? (
+                    {user.role.toLowerCase() === "user" ? (
                       <button
                         className="bg-blue-500 hover:bg-blue-600 text-white text-sm font-semibold px-3 py-1 rounded"
                         onClick={() => handleOnMakeAdmin(user.id)}
@@ -254,17 +253,6 @@ export default function AdminPage() {
                       </button>
                     )}
                   </div>
-                </td>
-                <td className="border border-gray-300 px-4 py-2 text-center">
-                  <span
-                    className={`inline-block px-2 py-1 text-xs font-semibold rounded ${
-                      user.role === "Admin"
-                        ? "bg-green-500 text-white"
-                        : "bg-gray-400 text-white"
-                    }`}
-                  >
-                    {user.role}
-                  </span>
                 </td>
               </tr>
             ))
