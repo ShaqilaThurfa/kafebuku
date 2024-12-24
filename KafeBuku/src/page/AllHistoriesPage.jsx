@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import API_BASE_URL from "../config";
 
 export default function AllHistories() {
   const [histories, setHistories] = useState([]);
@@ -11,7 +12,7 @@ export default function AllHistories() {
     const fetchHistories = async () => {
       try {
         const { data } = await axios.get(
-          "http://localhost:3001/admin/all-histories",
+          `${API_BASE_URL}/admin/all-histories`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("access_token")}`,
