@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import API_BASE_URL from "../config";
+
 
 export default function AdminPage() {
   const [users, setUsers] = useState([]);
@@ -9,7 +11,7 @@ export default function AdminPage() {
 
   const fetchUsers = async () => {
     try {
-      const { data } = await axios.get("http://localhost:3001/admin/all-users", {
+      const { data } = await axios.get(`${API_BASE_URL}/admin/all-users`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("access_token")}`,
         },
@@ -40,7 +42,7 @@ export default function AdminPage() {
     if (result.isConfirmed) {
       try {
         const response = await axios.put(
-          `http://localhost:3001/admin/turn-into-user/${id}`,
+          `${API_BASE_URL}/admin/turn-into-user/${id}`,
           {},
           {
             headers: {
@@ -79,7 +81,7 @@ export default function AdminPage() {
     if (result.isConfirmed) {
       try {
         const response = await axios.put(
-          `http://localhost:3001/admin/add-admin/${id}`,
+          `${API_BASE_URL}/admin/add-admin/${id}`,
           {},
           {
             headers: {
@@ -120,7 +122,7 @@ export default function AdminPage() {
     if (result.isConfirmed) {
       try {
         await axios.put(
-          `http://localhost:3001/admin/ban/${id}`,
+          `${API_BASE_URL}/admin/ban/${id}`,
           {},
           {
             headers: {
@@ -144,7 +146,7 @@ export default function AdminPage() {
   const handleOnUnbannedUser = async (id) => {
     try {
       await axios.put(
-        `http://localhost:3001/admin/unban/${id}`,
+        `${API_BASE_URL}/admin/unban/${id}`,
         {},
         {
           headers: {
@@ -236,7 +238,7 @@ export default function AdminPage() {
                         Unban
                       </button>
                     )}
-                    {user.role === "user" ? (
+                    {user.role === "user" || user.role === "User" ? (
                       <button
                         className="bg-blue-500 hover:bg-blue-600 text-white text-sm font-semibold px-3 py-1 rounded"
                         onClick={() => handleOnMakeAdmin(user.id)}
@@ -256,7 +258,7 @@ export default function AdminPage() {
                 <td className="border border-gray-300 px-4 py-2 text-center">
                   <span
                     className={`inline-block px-2 py-1 text-xs font-semibold rounded ${
-                      user.role === "Admin"
+                      user.role === "Admin" || user.role === "admin"
                         ? "bg-green-500 text-white"
                         : "bg-gray-400 text-white"
                     }`}
