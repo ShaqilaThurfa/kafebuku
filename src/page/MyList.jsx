@@ -54,6 +54,7 @@ export default function MyListPage() {
   const handleGenerateStory = async (bookId, title, description) => {
     try {
       setGeneratingBookId(bookId);
+      
       setTitle(title);
       const prompt = `Buat cerita dengan judul "${title}" dengan deskripsi ${description} dalam bahasa Indonesia dengan panjang kata maksimal 500 kata, jangan sertakan judul, penulis dan deskripsi dalam cerita.`;
       const genAI = new GoogleGenerativeAI(
@@ -79,6 +80,12 @@ export default function MyListPage() {
       setGeneratingBookId(null);
     }
   };
+
+  useEffect(() => {
+    if (!loading && generatingBookId) {
+      setGeneratingBookId(null);
+    }
+  }, []);
 
   return (
     <div className="container p-10 my-5 max-w-screen-lg bg-[#8B4513] text-white text-lg font-bold rounded-lg shadow-lg gap-y-8">
@@ -120,7 +127,7 @@ export default function MyListPage() {
                             novel.description
                           )
                         }
-                        disabled={generatingBookId === novel.bookId} 
+                        disabled={loading || generatingBookId == novel.bookId}
                       >
                         {generatingBookId === novel.bookId
                           ? "Generating..."

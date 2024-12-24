@@ -4,6 +4,8 @@ import axios from "axios";
 import Swal from 'sweetalert2'
 import API_BASE_URL from "../config";
 
+let isFetchingCredentials = false;
+
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [Password, setPassword] = useState("");
@@ -29,14 +31,26 @@ export default function LoginPage() {
   };
 
   async function handleCredentialResponse(response) {
-    const { data } = await axios.post(`${API_BASE_URL}/auth/googlelogin`, null, {
-      headers: {
-        token: response.credential,
-      },
-    });
+    if (isFetchingCredentials) return;
+    isFetchingCredentials = true;
 
-    localStorage.setItem("access_token", data.access_token);
-    navigate("/")
+    try {
+      const { data } = await axios.post(`${API_BASE_URL}/auth/googlelogin`, null, {
+        headers: {
+          token: response.credential,
+        },
+      });
+
+      localStorage.setItem("access_token", data.access_token);
+      navigate("/")
+    } catch (error) {
+      Swal.fire({
+        text: error.response ? error.response.data.message : 'Something went wrong!',
+      });
+    } finally {
+      isFetchingCredentials = false;
+    }
+
   }
 
 
@@ -44,15 +58,19 @@ export default function LoginPage() {
   
 
   useEffect(() => {
-    window.google.accounts.id.initialize({
-      client_id: googleClientId,
-      callback: handleCredentialResponse,
-    });
-    window.google.accounts.id.renderButton(
-      document.getElementById("buttonDiv"),
-      { theme: "outline", size: "large" }
-    );
-    window.google.accounts.id.prompt();
+    if (window.google && window.google.accounts) {
+      window.google.accounts.id.initialize({
+        client_id: googleClientId,
+        callback: handleCredentialResponse,
+      });
+      window.google.accounts.id.renderButton(
+        document.getElementById("buttonDiv"),
+        { theme: "outline", size: "large" }
+      );
+      window.google.accounts.id.prompt();
+    } else {
+      console.error("Google API not loaded.");
+    }
   }, []);
 
   return (
