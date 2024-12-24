@@ -1,0 +1,122 @@
+[
+  {
+    "id": 1,
+    "title": "The Great Gatsby",
+    "author": "F. Scott Fitzgerald",
+    "coverUrl": "https://example.com/covers/great-gatsby.jpg",
+    "description": "A classic novel set in the Jazz Age, exploring themes of wealth and class.",
+    "userId": 1,
+    "status": "available",
+    "added_at": "2024-01-15T10:00:00Z",
+    "createdAt": "2024-01-15T10:00:00Z",
+    "updatedAt": "2024-01-15T10:00:00Z"
+  },
+  {
+    "id": 2,
+    "title": "1984",
+    "author": "George Orwell",
+    "coverUrl": "https://example.com/covers/1984.jpg",
+    "description": "A dystopian novel about totalitarianism and surveillance.",
+    "userId": 2,
+    "status": "borrowed",
+    "added_at": "2024-01-20T11:00:00Z",
+    "createdAt": "2024-01-20T11:00:00Z",
+    "updatedAt": "2024-01-20T11:00:00Z"
+  },
+  {
+    "id": 3,
+    "title": "To Kill a Mockingbird",
+    "author": "Harper Lee",
+    "coverUrl": "https://example.com/covers/to-kill-a-mockingbird.jpg",
+    "description": "A novel about racial injustice in the American South.",
+    "userId": 1,
+    "status": "available",
+    "added_at": "2024-02-05T12:00:00Z",
+    "createdAt": "2024-02-05T12:00:00Z",
+    "updatedAt": "2024-02-05T12:00:00Z"
+  },
+  {
+    "id": 4,
+    "title": "Pride and Prejudice",
+    "author": "Jane Austen",
+    "coverUrl": "https://example.com/covers/pride-and-prejudice.jpg",
+    "description": "A classic novel about love and societal expectations in 19th-century England.",
+    "userId": 3,
+    "status": "available",
+    "added_at": "2024-02-10T09:00:00Z",
+    "createdAt": "2024-02-10T09:00:00Z",
+    "updatedAt": "2024-02-10T09:00:00Z"
+  },
+  {
+    "id": 5,
+    "title": "Moby Dick",
+    "author": "Herman Melville",
+    "coverUrl": "https://example.com/covers/moby-dick.jpg",
+    "description": "An epic tale of adventure and obsession on the high seas.",
+    "userId": 2,
+    "status": "borrowed",
+    "added_at": "2024-02-15T10:00:00Z",
+    "createdAt": "2024-02-15T10:00:00Z",
+    "updatedAt": "2024-02-15T10:00:00Z"
+  },
+  {
+    "id": 6,
+    "title": "Brave New World",
+    "author": "Aldous Huxley",
+    "coverUrl": "https://example.com/covers/brave-new-world.jpg",
+    "description": "A futuristic novel about a society driven by technology and control.",
+    "userId": 3,
+    "status": "available",
+    "added_at": "2024-02-18T14:00:00Z",
+    "createdAt": "2024-02-18T14:00:00Z",
+    "updatedAt": "2024-02-18T14:00:00Z"
+  },
+  {
+    "id": 7,
+    "title": "The Catcher in the Rye",
+    "author": "J.D. Salinger",
+    "coverUrl": "https://example.com/covers/catcher-in-the-rye.jpg",
+    "description": "A novel about adolescent angst and alienation.",
+    "userId": 1,
+    "status": "borrowed",
+    "added_at": "2024-03-01T15:00:00Z",
+    "createdAt": "2024-03-01T15:00:00Z",
+    "updatedAt": "2024-03-01T15:00:00Z"
+  },
+  {
+    "id": 8,
+    "title": "The Hobbit",
+    "author": "J.R.R. Tolkien",
+    "coverUrl": "https://example.com/covers/the-hobbit.jpg",
+    "description": "A fantasy adventure about the journey of Bilbo Baggins.",
+    "userId": 2,
+    "status": "available",
+    "added_at": "2024-03-05T16:00:00Z",
+    "createdAt": "2024-03-05T16:00:00Z",
+    "updatedAt": "2024-03-05T16:00:00Z"
+  },
+  {
+    "id": 9,
+    "title": "Frankenstein",
+    "author": "Mary Shelley",
+    "coverUrl": "https://example.com/covers/frankenstein.jpg",
+    "description": "A gothic novel about the dangers of unchecked scientific ambition.",
+    "userId": 1,
+    "status": "borrowed",
+    "added_at": "2024-03-10T17:00:00Z",
+    "createdAt": "2024-03-10T17:00:00Z",
+    "updatedAt": "2024-03-10T17:00:00Z"
+  },
+  {
+    "id": 10,
+    "title": "Crime and Punishment",
+    "author": "Fyodor Dostoevsky",
+    "coverUrl": "https://example.com/covers/crime-and-punishment.jpg",
+    "description": "A psychological exploration of guilt and redemption.",
+    "userId": 3,
+    "status": "available",
+    "added_at": "2024-03-15T18:00:00Z",
+    "createdAt": "2024-03-15T18:00:00Z",
+    "updatedAt": "2024-03-15T18:00:00Z"
+  }
+]

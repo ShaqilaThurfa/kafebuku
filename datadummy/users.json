@@ -1,0 +1,102 @@
+[
+  {
+    "id": 1,
+    "fullName": "John Doe",
+    "email": "johndoe@example.com",
+    "Password": "Password123!",
+    "role": "User",
+    "status": "active",
+    "createdAt": "2024-01-01T12:00:00Z",
+    "updatedAt": "2024-01-01T12:00:00Z"
+  },
+  {
+    "id": 2,
+    "fullName": "Jane Smith",
+    "email": "janesmith@example.com",
+    "Password": "AdminPass#1",
+    "role": "Admin",
+    "status": "active",
+    "createdAt": "2024-01-05T12:00:00Z",
+    "updatedAt": "2024-01-05T12:00:00Z"
+  },
+  {
+    "id": 3,
+    "fullName": "Alice Johnson",
+    "email": "alicejohnson@example.com",
+    "Password": "Alice@1234",
+    "role": "User",
+    "status": "active",
+    "createdAt": "2024-01-10T12:00:00Z",
+    "updatedAt": "2024-01-10T12:00:00Z"
+  },
+  {
+    "id": 4,
+    "fullName": "Bob Williams",
+    "email": "bobwilliams@example.com",
+    "Password": "Bob1234*",
+    "role": "User",
+    "status": "inactive",
+    "createdAt": "2024-01-15T12:00:00Z",
+    "updatedAt": "2024-01-15T12:00:00Z"
+  },
+  {
+    "id": 5,
+    "fullName": "Charlie Brown",
+    "email": "charliebrown@example.com",
+    "Password": "CharliePass#2",
+    "role": "Staff",
+    "status": "active",
+    "createdAt": "2024-01-20T12:00:00Z",
+    "updatedAt": "2024-01-20T12:00:00Z"
+  },
+  {
+    "id": 6,
+    "fullName": "Diana Evans",
+    "email": "dianaevans@example.com",
+    "Password": "Diana@789",
+    "role": "User",
+    "status": "active",
+    "createdAt": "2024-01-25T12:00:00Z",
+    "updatedAt": "2024-01-25T12:00:00Z"
+  },
+  {
+    "id": 7,
+    "fullName": "Eve Carter",
+    "email": "evecarter@example.com",
+    "Password": "EveSecure!1",
+    "role": "User",
+    "status": "inactive",
+    "createdAt": "2024-01-30T12:00:00Z",
+    "updatedAt": "2024-01-30T12:00:00Z"
+  },
+  {
+    "id": 8,
+    "fullName": "Frank Miller",
+    "email": "frankmiller@example.com",
+    "Password": "Frank@4321",
+    "role": "Staff",
+    "status": "active",
+    "createdAt": "2024-02-01T12:00:00Z",
+    "updatedAt": "2024-02-01T12:00:00Z"
+  },
+  {
+    "id": 9,
+    "fullName": "Grace Kelly",
+    "email": "gracekelly@example.com",
+    "Password": "Grace$2024",
+    "role": "Admin",
+    "status": "active",
+    "createdAt": "2024-02-05T12:00:00Z",
+    "updatedAt": "2024-02-05T12:00:00Z"
+  },
+  {
+    "id": 10,
+    "fullName": "Henry Ford",
+    "email": "henryford@example.com",
+    "Password": "Henry#6789",
+    "role": "User",
+    "status": "active",
+    "createdAt": "2024-02-10T12:00:00Z",
+    "updatedAt": "2024-02-10T12:00:00Z"
+  }
+]
