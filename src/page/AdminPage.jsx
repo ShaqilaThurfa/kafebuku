@@ -254,6 +254,9 @@ export default function AdminPage() {
                     )}
                   </div>
                 </td>
+                <td className="border border-gray-300 px-4 py-2 text-center">
+                  {user.role} 
+                </td>
               </tr>
             ))
           ) : (
