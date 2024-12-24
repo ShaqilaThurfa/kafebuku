@@ -13,7 +13,7 @@ export default function LoginPage() {
     event.preventDefault();
     try {
      
-      const { data } = await axios.post(`${API_BASE_URL}/user/login`, {
+      const { data } = await axios.post(`${API_BASE_URL}/auth/login`, {
         email,
         Password,
       });
@@ -29,7 +29,7 @@ export default function LoginPage() {
   };
 
   async function handleCredentialResponse(response) {
-    const { data } = await axios.post(`${API_BASE_URL}/user/googlelogin`, null, {
+    const { data } = await axios.post(`${API_BASE_URL}/auth/googlelogin`, null, {
       headers: {
         token: response.credential,
       },

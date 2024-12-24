@@ -14,7 +14,7 @@ export default function RegisterPage() {
     event.preventDefault();
     //http://localhost:3001/user/register
     try {
-      await axios.post(`${API_BASE_URL}/user/register`, {
+      await axios.post(`${API_BASE_URL}/auth/register`, {
         fullName,
         email,
         Password,
